@@ -1,7 +1,9 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 function Header() {
+  const navigate = useNavigate();
+
   return (
     <header className="light-yellow-background border-b border-gray-200">
       <nav className="container max-w-7xl mx-auto flex justify-between items-center py-6 px-6">
@@ -10,7 +12,9 @@ function Header() {
             <NavLink
               to="/about"
               className={({ isActive }) =>
-                isActive ? "underline inria-serif-font" : "hover:underline inria-serif-font"
+                isActive
+                  ? "underline inria-serif-font"
+                  : "hover:underline inria-serif-font"
               }
             >
               ABOUT US
@@ -20,7 +24,9 @@ function Header() {
             <NavLink
               to="/our-works"
               className={({ isActive }) =>
-                isActive ? "underline inria-serif-font" : "hover:underline inria-serif-font"
+                isActive
+                  ? "underline inria-serif-font"
+                  : "hover:underline inria-serif-font"
               }
             >
               OUR WORKS
@@ -30,15 +36,19 @@ function Header() {
             <NavLink
               to="/services"
               className={({ isActive }) =>
-                isActive ? "underline inria-serif-font" : "hover:underline inria-serif-font"
+                isActive
+                  ? "underline inria-serif-font"
+                  : "hover:underline inria-serif-font"
               }
             >
               OUR SERVICES
             </NavLink>
           </li>
         </ul>
-        <div className="text-center cursor-pointer">
-          <h1 className="playfair-display-font text-2xl font-medium">WEDDING DREAM</h1>
+        <div className="text-center cursor-pointer" onClick={() => navigate("/")}>
+          <h1 className="playfair-display-font text-2xl font-medium">
+            WEDDING DREAM
+          </h1>
           <p className="text-sm text-red-800 font-semibold italic">
             Since 2024
           </p>
@@ -48,7 +58,9 @@ function Header() {
             <NavLink
               to="/feedback"
               className={({ isActive }) =>
-                isActive ? "underline inria-serif-font" : "hover:underline inria-serif-font"
+                isActive
+                  ? "underline inria-serif-font"
+                  : "hover:underline inria-serif-font"
               }
             >
               OUR FEEDBACK
@@ -58,7 +70,9 @@ function Header() {
             <NavLink
               to="/blog"
               className={({ isActive }) =>
-                isActive ? "underline inria-serif-font" : "hover:underline inria-serif-font"
+                isActive
+                  ? "underline inria-serif-font"
+                  : "hover:underline inria-serif-font"
               }
             >
               BLOG
@@ -68,7 +82,9 @@ function Header() {
             <NavLink
               to="/contact"
               className={({ isActive }) =>
-                isActive ? "underline inria-serif-font" : "hover:underline inria-serif-font"
+                isActive
+                  ? "underline inria-serif-font"
+                  : "hover:underline inria-serif-font"
               }
             >
               CONTACT

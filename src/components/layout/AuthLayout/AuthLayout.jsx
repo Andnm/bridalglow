@@ -14,8 +14,8 @@ function AuthLayout({ children }) {
       </main>
       <Footer />
 
-      <div className="fixed bottom-10 right-5 w-12 h-12 bg-blue-300 flex items-center justify-center rounded-full shadow-lg hover:bg-blue-400 hover:scale-110 transition cursor-pointer">
-        <TfiHeadphoneAlt className="text-white text-xl" />
+      <div className="fixed bottom-10 right-5 w-12 h-12 flex items-center justify-center rounded-full shadow-lg hover:scale-110 transition cursor-pointer light-yellow-background">
+        <TfiHeadphoneAlt className="text-red-800 text-xl" />
       </div>
     </div>
   );
