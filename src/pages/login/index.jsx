@@ -1,9 +1,20 @@
-import React from 'react'
+import React, { useState } from "react";
+import LoginSection from "../../components/auth/LoginSection";
+import RegisterSection from "../../components/auth/RegisterSection";
+import '../../components/auth/style.scss'
 
-const Login = () => {
+const LoginPage = () => {
+  const [isLogin, setIsLogin] = useState(true);
+
   return (
-    <div>Login</div>
-  )
-}
+    <div className="authen-page light-yellow-background ">
+      {isLogin ? (
+        <LoginSection setIsLogin={setIsLogin} />
+      ) : (
+        <RegisterSection setIsLogin={setIsLogin} />
+      )}
+    </div>
+  );
+};
 
-export default Login
+export default LoginPage;

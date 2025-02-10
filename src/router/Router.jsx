@@ -3,6 +3,7 @@ import Home from "../pages/home/Home";
 import NotFound from "../pages/notFound/NotFound";
 import AuthLayout from "../components/layout/AuthLayout/AuthLayout";
 import Services from "../pages/service";
+import LoginPage from "../pages/login";
 
 const Router = () => {
   return (
@@ -16,9 +17,7 @@ const Router = () => {
       <Route element={<AuthLayout />}>
         <Route path="/" element={<Home />} />
         <Route path="/services" element={<Services />} />
-        <Route path="/login" element={<Services />} />
-        <Route path="/login" element={<Services />} />
-
+        <Route path="/login" element={<LoginPage />} />
       </Route>
 
       <Route path="/*" element={<NotFound />} />
