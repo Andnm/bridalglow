@@ -1,60 +1,39 @@
 @import "variables";
 @import "globals";
+@import url("https://fonts.googleapis.com/css2?family=Hurricane&family=Inria+Serif:wght@300;400;700&family=Playfair+Display:wght@400;700&display=swap");
 
 .container {
   max-width: 1240px;
   margin: 0 auto;
 }
 
-.light-gray-background {
-  background-color: $light-gray-color;
+
+.light-yellow-background {
+  background-color: $light-yellow;
 }
 
-.header-home-page {
-  .logo {
-    height: 60px;
-    width: 250px;
-  }
+.playfair-display-font {
+  font-family: "Playfair Display", serif;
+}
 
-  .post-button {
-    background-color: #00b7ff;
-  }
+.inria-serif-font {
+  font-family: "Inria Serif", serif;
+}
 
-  .auth-button {
-    background-color: $dark-blue-color;
-  }
+.hurricane-font {
+  font-family: "Hurricane", cursive;
 }
 
 .home-page {
-  .banner-container {
-    position: relative;
-    width: 100%;
-    height: 400px;
-    overflow: hidden;
+  .banner-section {
+    background-image: url("../images/banner-home.png");
+    background-size: cover;
+    background-position: center;
+    height: 700px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    text-align: center;
   }
-
-  .icon-filter {
-    color: #00b7ff;
-  }
-
-  .select-option {
-    color: #898a8b;
-  }
-
-  .experience-dorn {
-    background-color: $dark-blue-color;
-  }
-}
-
-.ant-carousel .slick-next,
-.ant-carousel .slick-prev {
-  width: 40px;
-  height: 40px;
-}
-
-.line-clamp-2 {
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
 }
