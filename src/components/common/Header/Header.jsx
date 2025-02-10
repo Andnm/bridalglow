@@ -94,7 +94,7 @@ function Header() {
         <div className="flex space-x-4">
           <NavLink
             to="/login"
-            className="bg-red-800 text-white px-4 py-1 rounded-lg shadow-md hover:bg-white hover:text-red-800 border border-red-800 transition duration-300 inria-serif-font"
+            className="bg-red-900 text-white px-4 py-1 rounded-lg shadow-md hover:bg-white hover:text-red-800 border border-red-800 transition duration-300 inria-serif-font"
           >
             Login
           </NavLink>

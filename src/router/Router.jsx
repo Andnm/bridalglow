@@ -16,6 +16,9 @@ const Router = () => {
       <Route element={<AuthLayout />}>
         <Route path="/" element={<Home />} />
         <Route path="/services" element={<Services />} />
+        <Route path="/login" element={<Services />} />
+        <Route path="/login" element={<Services />} />
+
       </Route>
 
       <Route path="/*" element={<NotFound />} />

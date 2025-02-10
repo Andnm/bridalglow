@@ -7,7 +7,6 @@
   margin: 0 auto;
 }
 
-
 .light-yellow-background {
   background-color: $light-yellow;
 }
@@ -30,6 +29,20 @@
     background-size: cover;
     background-position: center;
     height: 700px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    text-align: center;
+  }
+}
+
+.services-page {
+  .banner-section {
+    background-image: url("../images/banner-our-service.png");
+    background-size: cover;
+    background-position: center;
+    height: 500px;
     display: flex;
     align-items: center;
     justify-content: center;
