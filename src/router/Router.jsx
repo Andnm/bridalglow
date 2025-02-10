@@ -2,6 +2,7 @@ import { Route, Routes } from "react-router-dom";
 import Home from "../pages/home/Home";
 import NotFound from "../pages/notFound/NotFound";
 import AuthLayout from "../components/layout/AuthLayout/AuthLayout";
+import Services from "../pages/service";
 
 const Router = () => {
   return (
@@ -14,6 +15,7 @@ const Router = () => {
 
       <Route element={<AuthLayout />}>
         <Route path="/" element={<Home />} />
+        <Route path="/services" element={<Services />} />
       </Route>
 
       <Route path="/*" element={<NotFound />} />
