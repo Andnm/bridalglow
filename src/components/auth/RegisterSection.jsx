@@ -1,4 +1,4 @@
-import { message } from "antd";
+import { message, Select } from "antd";
 import React, { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { GrSecure } from "react-icons/gr";
@@ -30,6 +30,7 @@ const RegisterSection = ({ setIsLogin }) => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [password, setPassword] = useState("");
   const [isChecked, setIsChecked] = useState(false);
+  const [role, setRole] = useState("");
   const [error, setError] = useState("");
 
   const handleLoginWithGoogle = async () => {
@@ -47,7 +48,7 @@ const RegisterSection = ({ setIsLogin }) => {
         if (getCurrentUserThunk.rejected.match(getCurrentUserAction)) {
           toast.error(response.payload || response.error.message);
         } else {
-          toast.success("Đăng nhập thành công");
+          toast.success("Login succesfully");
           navigate("/");
         }
       }
@@ -66,24 +67,22 @@ const RegisterSection = ({ setIsLogin }) => {
     e.preventDefault();
     setError("");
 
-    if (!email || !password || !name || !phoneNumber) {
+    if (!email || !password || !name || !phoneNumber || !role) {
       setError(
-        "Vui lòng không để trống tên, email, số điện thoại và mật khẩu!"
+        "Please do not leave name, email, phone number, password and select role blank!"
       );
       setIsLoading(false);
       return;
     }
 
     if (!isValidEmail(email)) {
-      setError("Email không hợp lệ!");
+      setError("Email not valid!");
       setIsLoading(false);
       return;
     }
 
     if (!isChecked) {
-      setError(
-        "Vui lòng đồng ý với các điều khoản và chính sách trước khi đăng ký!"
-      );
+      setError("Please agree to the terms and policies before registering!");
       return;
     }
 
@@ -95,6 +94,7 @@ const RegisterSection = ({ setIsLogin }) => {
         password: password,
         fullname: name,
         phone_number: phoneNumber,
+        role: role,
       };
 
       const action = await dispatch(registerThunk(data));
@@ -109,6 +109,7 @@ const RegisterSection = ({ setIsLogin }) => {
           setPhoneNumber("");
           setEmail("");
           setPassword("");
+          setRole("");
           navigate("/");
         }
       }
@@ -197,6 +198,19 @@ const RegisterSection = ({ setIsLogin }) => {
               onChange={(e) => setPassword(e.target.value)}
             />
             <GrSecure className="absolute left-3 w-6 h-6 opacity-30" />
+          </div>
+
+          <div className="input-field relative mt-6">
+            <label className="font-semibold text-lg w-full">Choose your role</label>
+            <Select
+              value={role}
+              onChange={(value) => setRole(value)}
+              className="font-semibold text-lg mt-2 w-full"
+              placeholder="Please choose your role"
+            >
+              <Select.Option value="Customer">Customer</Select.Option>
+              <Select.Option value="Artist">Artist</Select.Option>
+            </Select>
           </div>
 
           <div className="my-6 flex flex-row items-center justify-between">

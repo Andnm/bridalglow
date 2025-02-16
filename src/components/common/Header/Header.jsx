@@ -5,7 +5,7 @@ import { userSelector } from "../../../redux/selectors/selector";
 import { ROLE_ADMIN, ROLE_CUSTOMER } from "../../../utils/constants";
 import { getCurrentUserThunk } from "../../../redux/actions/userThunk";
 import { logoutUser } from "../../../redux/reducers/userReducer";
-import { Avatar } from "antd";
+import { Avatar, Dropdown, Menu } from "antd";
 import { generateFallbackAvatar } from "../../../utils/helpers";
 import { FaUser } from "react-icons/fa";
 import { RiLogoutBoxRLine } from "react-icons/ri";
@@ -16,7 +16,6 @@ function Header() {
   const user = useSelector(userSelector);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isLoginModal, setIsLoginModal] = useState(true);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   useEffect(() => {
     const handleRelogin = async () => {
@@ -46,19 +45,29 @@ function Header() {
     handleRelogin();
   }, []);
 
-  const showModal = (isLogin) => {
-    setIsLoginModal(isLogin);
-    setIsModalVisible(true);
-  };
-
-  const handleCancel = () => {
-    setIsModalVisible(false);
-  };
-
   const handleLogout = () => {
     navigate("/");
     dispatch(logoutUser());
   };
+
+  const menu = (
+    <Menu>
+      <Menu.Item
+        key="profile"
+        onClick={() => navigate("/profile")}
+        icon={<FaUser />}
+      >
+        My Profile
+      </Menu.Item>
+      <Menu.Item
+        key="logout"
+        onClick={handleLogout}
+        icon={<RiLogoutBoxRLine />}
+      >
+        Đăng xuất
+      </Menu.Item>
+    </Menu>
+  );
 
   return (
     <header className="light-yellow-background border-b border-gray-200">
@@ -150,30 +159,28 @@ function Header() {
             </NavLink>
           </li>
         </ul>
-        <div
-          className="flex space-x-4 relative"
-          onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-          onMouseLeave={() => setIsDropdownOpen(false)}
-        >
+        <div className="flex space-x-4 relative">
           {user?.user ? (
-            <>
-              <Avatar
-                src={
-                  user?.user?.avatar_url ??
-                  generateFallbackAvatar(user?.user?.fullname)
-                }
-                alt={"avatar"}
-                style={{
-                  marginRight: "8px",
-                  border: "1px solid #d9d9d9",
-                }}
-                size={25}
-              />
-
-              <span className="auth-link hover:underline cursor-pointer truncate">
-                {user?.user?.fullname}
-              </span>
-            </>
+            <Dropdown
+              overlay={menu}
+              trigger={["click"]}
+              placement="bottomRight"
+            >
+              <div className="flex items-center cursor-pointer">
+                <Avatar
+                  src={
+                    user?.user?.avatar_url ??
+                    generateFallbackAvatar(user?.user?.fullname)
+                  }
+                  alt={"avatar"}
+                  style={{
+                    marginRight: "8px",
+                    border: "1px solid #d9d9d9",
+                  }}
+                  size={40}
+                />
+              </div>
+            </Dropdown>
           ) : (
             <NavLink
               to="/login"
@@ -181,20 +188,6 @@ function Header() {
             >
               Login
             </NavLink>
-          )}
-
-          {user?.user && isDropdownOpen && (
-            <div className="absolute right-0 top-5 w-56 bg-white border border-gray-300 rounded-lg shadow-lg z-10">
-              <ul className="py-3">
-                <li
-                  className="px-8 py-2 flex flex-row gap-2 items-center hover:bg-gray-100 text-red-500 cursor-pointer"
-                  onClick={handleLogout}
-                >
-                  <RiLogoutBoxRLine className="text-sm" />
-                  Đăng xuất
-                </li>
-              </ul>
-            </div>
           )}
         </div>
       </nav>

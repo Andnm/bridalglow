@@ -4,6 +4,8 @@ import NotFound from "../pages/notFound/NotFound";
 import AuthLayout from "../components/layout/AuthLayout/AuthLayout";
 import Services from "../pages/service";
 import LoginPage from "../pages/login";
+import ForgotPassword from "../pages/forgotPassword/ForgotPassword";
+import Profile from "../pages/profile/Profile";
 
 const Router = () => {
   return (
@@ -18,6 +20,8 @@ const Router = () => {
         <Route path="/" element={<Home />} />
         <Route path="/services" element={<Services />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/profile" element={<Profile />} />
       </Route>
 
       <Route path="/*" element={<NotFound />} />

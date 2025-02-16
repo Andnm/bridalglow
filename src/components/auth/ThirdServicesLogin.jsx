@@ -33,7 +33,7 @@ const ThirdServicesLogin = ({ triggerCancel, isLoading, setIsLoading }) => {
         if (getCurrentUserThunk.rejected.match(getCurrentUserAction)) {
           toast.error(response.payload || response.error.message);
         } else {
-          toast.success("Đăng nhập thành công");
+          toast.success("Login succesfully");
           triggerCancel();
         }
       }

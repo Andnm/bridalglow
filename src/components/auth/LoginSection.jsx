@@ -8,7 +8,11 @@ import { useDispatch } from "react-redux";
 import { emailRegex, ROLE_ADMIN, ROLE_CUSTOMER } from "../../utils/constants";
 import { useNavigate } from "react-router-dom";
 import SpinnerLoading from "../loading/SpinnerLoading";
-import { getCurrentUserThunk, loginGoogleThunk, loginThunk } from "../../redux/actions/userThunk";
+import {
+  getCurrentUserThunk,
+  loginGoogleThunk,
+  loginThunk,
+} from "../../redux/actions/userThunk";
 import { toast } from "react-toastify";
 import {
   auth,
@@ -34,18 +38,18 @@ const LoginSection = ({ setIsLogin }) => {
 
       const response = await dispatch(loginGoogleThunk({ token }));
       if (loginGoogleThunk.rejected.match(response)) {
-        toast.error(response.payload || "Đăng nhập thất bại");
+        toast.error(response.payload || "Login failed");
       } else {
         const getCurrentUserAction = await dispatch(getCurrentUserThunk());
         if (getCurrentUserThunk.rejected.match(getCurrentUserAction)) {
           toast.error(response.payload || response.error.message);
         } else {
-          toast.success("Đăng nhập thành công");
+          toast.success("Login succesfully");
           navigate("/");
         }
       }
     } catch (error) {
-      toast.error("Đăng nhập Google thất bại");
+      toast.error("Login Google failed");
     } finally {
       setIsLoading(false);
     }
@@ -166,7 +170,14 @@ const LoginSection = ({ setIsLogin }) => {
                   Remember
                 </label>
               </div>
-              <p className="forgot font-semibold">Forgot password?</p>
+              <p
+                className="forgot font-semibold"
+                onClick={() => {
+                  navigate("/forgot-password");
+                }}
+              >
+                Forgot password?
+              </p>
             </div>
 
             <button
