@@ -21,6 +21,7 @@ import { list_services_wedding } from "../../utils/constants";
 import { checkFreeSlot } from "../../services/schedule.services";
 import moment from "moment";
 import { formatPrice } from "../../utils/common";
+import { toast } from "react-toastify";
 const { Option } = Select;
 
 const { Title, Text } = Typography;
@@ -88,6 +89,8 @@ const ArtistDetail = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const userData = useSelector(userSelector);
+
+  console.log("userData: ", userData)
 
   const [artist, setArtist] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -259,7 +262,13 @@ const ArtistDetail = () => {
             <div className="w-full flex justify-center">
               <button
                 className="cursor-pointer w-fit py-3 px-6 bg-green-500 border-2 border-green-500 text-white font-semibold rounded-lg hover:bg-green-600 hover:border-green-600 transition-all duration-300"
-                onClick={() => setIsModalVisible(true)}
+                onClick={() => {
+                  if (!userData?.user) {
+                    toast.warning("Please login before booking!");
+                  } else {
+                    setIsModalVisible(true);
+                  }
+                }}
               >
                 Book now
               </button>

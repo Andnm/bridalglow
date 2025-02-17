@@ -22,6 +22,7 @@ import { userSelector } from "../../redux/selectors/selector";
 import { updateUser } from "../../redux/reducers/userReducer";
 import { toast } from "react-toastify";
 import SpinnerLoading from "../../components/loading/SpinnerLoading";
+import { ROLE_CUSTOMER } from "../../utils/constants";
 
 const { Option } = Select;
 
@@ -253,118 +254,129 @@ function Profile() {
                 />
               </Form.Item>
 
-              <Form.Item
-                label="Gender"
-                labelCol={{ span: 8 }}
-                wrapperCol={{ span: 16 }}
-              >
-                <Select
-                  value={userData.gender}
-                  onChange={(value) =>
-                    setUserData({ ...userData, gender: value })
-                  }
-                  style={{ width: "100%", marginBottom: 15 }}
-                  placeholder="Gender"
-                >
-                  <Option value="Male">Male</Option>
-                  <Option value="Female">Female</Option>
-                  <Option value="Other">Other</Option>
-                </Select>
-              </Form.Item>
+              {userRedux?.user?.role !== ROLE_CUSTOMER && (
+                <>
+                  <Form.Item
+                    label="Gender"
+                    labelCol={{ span: 8 }}
+                    wrapperCol={{ span: 16 }}
+                  >
+                    <Select
+                      value={userData.gender}
+                      onChange={(value) =>
+                        setUserData({ ...userData, gender: value })
+                      }
+                      style={{ width: "100%", marginBottom: 15 }}
+                      placeholder="Gender"
+                    >
+                      <Option value="Male">Male</Option>
+                      <Option value="Female">Female</Option>
+                      <Option value="Other">Other</Option>
+                    </Select>
+                  </Form.Item>
 
-              <Form.Item
-                label="Description"
-                labelCol={{ span: 8 }}
-                wrapperCol={{ span: 16 }}
-              >
-                <Input.TextArea
-                  value={userData.description}
-                  onChange={(e) =>
-                    setUserData({ ...userData, description: e.target.value })
-                  }
-                  placeholder="Description"
-                  style={{ marginBottom: 15 }}
-                />
-              </Form.Item>
+                  <Form.Item
+                    label="Description"
+                    labelCol={{ span: 8 }}
+                    wrapperCol={{ span: 16 }}
+                  >
+                    <Input.TextArea
+                      value={userData.description}
+                      onChange={(e) =>
+                        setUserData({
+                          ...userData,
+                          description: e.target.value,
+                        })
+                      }
+                      placeholder="Description"
+                      style={{ marginBottom: 15 }}
+                    />
+                  </Form.Item>
 
-              <Form.Item
-                label="Achievements"
-                labelCol={{ span: 8 }}
-                wrapperCol={{ span: 16 }}
-              >
-                <Input.TextArea
-                  value={userData.achievements}
-                  onChange={(e) =>
-                    setUserData({ ...userData, achievements: e.target.value })
-                  }
-                  placeholder="Achievements"
-                  style={{ marginBottom: 15 }}
-                />
-              </Form.Item>
+                  <Form.Item
+                    label="Achievements"
+                    labelCol={{ span: 8 }}
+                    wrapperCol={{ span: 16 }}
+                  >
+                    <Input.TextArea
+                      value={userData.achievements}
+                      onChange={(e) =>
+                        setUserData({
+                          ...userData,
+                          achievements: e.target.value,
+                        })
+                      }
+                      placeholder="Achievements"
+                      style={{ marginBottom: 15 }}
+                    />
+                  </Form.Item>
 
-              <Form.Item
-                label="Experience"
-                labelCol={{ span: 8 }}
-                wrapperCol={{ span: 16 }}
-              >
-                <Input.TextArea
-                  value={userData.experience}
-                  onChange={(e) =>
-                    setUserData({ ...userData, experience: e.target.value })
-                  }
-                  placeholder="Experience"
-                  style={{ marginBottom: 15 }}
-                />
-              </Form.Item>
+                  <Form.Item
+                    label="Experience"
+                    labelCol={{ span: 8 }}
+                    wrapperCol={{ span: 16 }}
+                  >
+                    <Input.TextArea
+                      value={userData.experience}
+                      onChange={(e) =>
+                        setUserData({ ...userData, experience: e.target.value })
+                      }
+                      placeholder="Experience"
+                      style={{ marginBottom: 15 }}
+                    />
+                  </Form.Item>
 
-              <Form.Item
-                label="Fanpage URL"
-                labelCol={{ span: 8 }}
-                wrapperCol={{ span: 16 }}
-              >
-                <Input
-                  value={userData.fanpage}
-                  onChange={(e) =>
-                    setUserData({ ...userData, fanpage: e.target.value })
-                  }
-                  placeholder="Fanpage URL"
-                  style={{ marginBottom: 15 }}
-                />
-              </Form.Item>
+                  <Form.Item
+                    label="Fanpage URL"
+                    labelCol={{ span: 8 }}
+                    wrapperCol={{ span: 16 }}
+                  >
+                    <Input
+                      value={userData.fanpage}
+                      onChange={(e) =>
+                        setUserData({ ...userData, fanpage: e.target.value })
+                      }
+                      placeholder="Fanpage URL"
+                      style={{ marginBottom: 15 }}
+                    />
+                  </Form.Item>
+                </>
+              )}
             </Form>
           </Card>
 
           <div className="mt-10"></div>
+          {userRedux?.user?.role !== ROLE_CUSTOMER && (
+            <Card title="Makeup Images" bordered={false}>
+              <Upload
+                listType="picture-card"
+                fileList={userData.makeup_img_list.map((imgUrl, index) => ({
+                  uid: index,
+                  name: `image-${index}`,
+                  url: imgUrl,
+                }))}
+                onChange={({ fileList }) => handleMakeupImageChange(fileList)}
+                beforeUpload={() => false}
+                multiple
+              >
+                <Button icon={<UploadOutlined />}></Button>
+              </Upload>
 
-          <Card title="Makeup Images" bordered={false}>
-            <Upload
-              listType="picture-card"
-              fileList={userData.makeup_img_list.map((imgUrl, index) => ({
-                uid: index,
-                name: `image-${index}`,
-                url: imgUrl,
-              }))}
-              onChange={({ fileList }) => handleMakeupImageChange(fileList)}
-              beforeUpload={() => false}
-              multiple
-            >
-              <Button icon={<UploadOutlined />}></Button>
-            </Upload>
-
-            <Row gutter={16} style={{ marginTop: 20 }}>
-              {userData.makeup_img_list.map((imgUrl, index) => (
-                <Col key={index} span={6}>
-                  <Image
-                    src={imgUrl}
-                    alt={`makeup-img-${index}`}
-                    width="100%"
-                    height={250}
-                    className="object-cover"
-                  />
-                </Col>
-              ))}
-            </Row>
-          </Card>
+              <Row gutter={16} style={{ marginTop: 20 }}>
+                {userData.makeup_img_list.map((imgUrl, index) => (
+                  <Col key={index} span={6}>
+                    <Image
+                      src={imgUrl}
+                      alt={`makeup-img-${index}`}
+                      width="100%"
+                      height={250}
+                      className="object-cover"
+                    />
+                  </Col>
+                ))}
+              </Row>
+            </Card>
+          )}
         </Col>
       </Row>
 
