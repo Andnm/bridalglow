@@ -165,7 +165,7 @@ export const list_services_wedding = [
 export const styling_decorating_list = [
   {
     id: 22,
-    title: "Danh sách các nhà trang điểm",
+    title: "List of makeup artists",
   },
   {
     id: 33,

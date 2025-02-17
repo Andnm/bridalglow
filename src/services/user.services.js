@@ -36,10 +36,11 @@ export const updateUserProfile = async (user_id, dataBody) => {
   }
 };
 
-export const changePassword = async (user_id) => {
+export const changePassword = async (user_id, data) => {
   try {
     const response = await axiosInstance.put(
-      `api/users/changePassword/${user_id}`
+      `api/users/changePassword/${user_id}`,
+      data
     );
     return response.data;
   } catch (error) {
@@ -47,10 +48,11 @@ export const changePassword = async (user_id) => {
   }
 };
 
-export const checkOldPassword = async (user_id) => {
+export const checkOldPassword = async (user_id, data) => {
   try {
     const response = await axiosInstance.post(
-      `api/users/changePassword/${user_id}`
+      `api/users/changePassword/${user_id}`,
+      data
     );
     return response.data;
   } catch (error) {

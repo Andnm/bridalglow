@@ -8,6 +8,7 @@ import ForgotPassword from "../pages/forgotPassword/ForgotPassword";
 import Profile from "../pages/profile/Profile";
 import Schedule from "../pages/schedule/Schedule";
 import ArtistDetail from "../pages/artistDetail/ArtistDetail";
+import ChangePassword from "../pages/changePassword/ChangePassword";
 
 const Router = () => {
   return (
@@ -23,6 +24,7 @@ const Router = () => {
         <Route path="/services" element={<Services />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/change-password" element={<ChangePassword />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/schedule" element={<Schedule />} />
         <Route path="/artist/:id" element={<ArtistDetail />} />

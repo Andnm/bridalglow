@@ -1,35 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Card, List, Image, Typography, Button, Row, Col, Spin } from "antd";
 import { ShoppingCartOutlined } from "@ant-design/icons";
-import { useNavigate } from "react-router-dom"; // Import useNavigate từ react-router-dom
+import { useNavigate } from "react-router-dom"; 
 import { styling_decorating_list } from "../../utils/constants";
+import { getAllArtists } from "../../services/user.services";
 
 const { Text, Title } = Typography;
-
-// Giả sử đây là API call giả lập của bạn
-const getAllArtists = async () => {
-  // API thực tế của bạn sẽ trả về danh sách artist
-  return [
-    {
-      _id: 1,
-      name: "Artist 1",
-      image: "artist1.jpg",
-      description: "Artist 1 description",
-    },
-    {
-      _id: 2,
-      name: "Artist 2",
-      image: "artist2.jpg",
-      description: "Artist 2 description",
-    },
-    {
-      _id: 3,
-      name: "Artist 3",
-      image: "artist3.jpg",
-      description: "Artist 3 description",
-    },
-  ];
-};
 
 const StylingDecoration = ({ scrollTo }) => {
   const titleRef = useRef(null);
@@ -50,6 +26,7 @@ const StylingDecoration = ({ scrollTo }) => {
       setLoading(true);
       try {
         const data = await getAllArtists(); 
+        console.log("data: ", data)
         setArtists(data);
       } catch (error) {
         console.error("Error fetching artists:", error);
@@ -58,7 +35,7 @@ const StylingDecoration = ({ scrollTo }) => {
       }
     };
 
-    if (activeKey === "Danh sách các nhà trang điểm") {
+    if (activeKey === "List of makeup artists") {
       fetchArtists();
     }
   }, [activeKey]);
@@ -174,8 +151,8 @@ const StylingDecoration = ({ scrollTo }) => {
         ))}
       </Row>
 
-      {activeKey === "Danh sách các nhà trang điểm"
-        ? renderArtists() // Hiển thị artist nếu tiêu đề là "Danh sách các nhà trang điểm"
+      {activeKey === "List of makeup artists"
+        ? renderArtists() // Hiển thị artist nếu tiêu đề là "List of makeup artists"
         : styling_decorating_list
             .filter((item) => item.title === activeKey)
             .map((item) => (

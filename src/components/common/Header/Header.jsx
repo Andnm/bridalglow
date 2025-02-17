@@ -10,6 +10,7 @@ import { generateFallbackAvatar } from "../../../utils/helpers";
 import { FaUser } from "react-icons/fa";
 import { RiLogoutBoxRLine } from "react-icons/ri";
 import { CalendarOutlined } from "@ant-design/icons";
+import { MdPassword } from "react-icons/md";
 
 function Header() {
   const navigate = useNavigate();
@@ -64,6 +65,13 @@ function Header() {
         icon={<CalendarOutlined />}
       >
         Schedule
+      </Menu.Item>
+      <Menu.Item
+        key="change-password"
+        onClick={() => navigate("/change-password")}
+        icon={<MdPassword />}
+      >
+        Change password
       </Menu.Item>
       <Menu.Item
         key="logout"
