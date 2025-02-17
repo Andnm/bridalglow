@@ -18,9 +18,36 @@ export const getAllUserByAdmin = async () => {
   }
 };
 
+export const getAllArtistByAdmin = async () => {
+  try {
+    const response = await axiosInstance.get(`/api/users/artists`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const getAllArtists = async () => {
   try {
     const response = await axiosInstance.get(`/api/users/artists`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const banAccountByAdmin = async (account_id) => {
+  try {
+    const response = await axiosInstance.patch(`/api/users/banAccountByAdmin/${account_id}`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const unBanAccountByAdmin = async (account_id) => {
+  try {
+    const response = await axiosInstance.patch(`/api/users/unBanAccountByAdmin/${account_id}`);
     return response.data;
   } catch (error) {
     throw error;

@@ -4,9 +4,11 @@ import { BiSolidUserAccount } from "react-icons/bi";
 import { FaHotel } from "react-icons/fa";
 import { MdOutlineRequestPage, MdOutlineSpaceDashboard, MdSpaceDashboard } from "react-icons/md";
 import { AiOutlineDashboard, AiOutlineTransaction } from "react-icons/ai";
+import { UserAddOutlined } from "@ant-design/icons";
+import { FaPersonDotsFromLine } from "react-icons/fa6";
 
 export const handleActionNotSupport = () => {
-  toast.warning("Tính năng chưa hỗ trợ");
+  toast.warning("Feature not yet supported");
 };
 
 export const handleLowerCaseNonAccentVietnamese = (str) => {
@@ -51,9 +53,22 @@ export const sliderMenu = [
     roles: [ROLE_ADMIN],
   },
   {
+    key: "manage-user",
+    icon: <UserAddOutlined />,
+    label: "Customer",
+    roles: [ROLE_ADMIN],
+  },
+  {
+    key: "manage-artist",
+    icon: <FaPersonDotsFromLine />,
+    label: "Artist",
+    roles: [ROLE_ADMIN],
+  },
+  {
     key: "manage-transaction",
     icon: <AiOutlineTransaction />,
     label: "Transaction",
     roles: [ROLE_ADMIN],
   },
+
 ];

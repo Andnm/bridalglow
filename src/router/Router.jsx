@@ -13,6 +13,8 @@ import AdminTransactionPage from "../pages/admin/ManageTransaction";
 import AdminLayout from "../components/layout/AdminLayout";
 import Dashboard from "../pages/admin/Dashboard";
 import ManageTransaction from "../pages/admin/ManageTransaction";
+import ManageUser from "../pages/admin/ManageUser";
+import ManageArtist from "../pages/admin/ManageArtist";
 
 const Router = () => {
   return (
@@ -37,6 +39,8 @@ const Router = () => {
       <Route element={<AdminLayout />}>
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/manage-transaction" element={<ManageTransaction />} />
+        <Route path="/manage-user" element={<ManageUser />} />
+        <Route path="/manage-artist" element={<ManageArtist />} />
       </Route>
       <Route path="/*" element={<NotFound />} />
     </Routes>
