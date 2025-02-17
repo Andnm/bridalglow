@@ -108,14 +108,20 @@ const StylingDecoration = ({ scrollTo }) => {
           <Col key={artist._id} span={8}>
             <Card
               hoverable
-              cover={<Image alt={artist.fullname} src={artist.avatar_url} />}
+              cover={<Image alt={artist.fullname} src={artist.avatar_url} className="object-cover" height={278} />}
             >
               <Card.Meta title={artist.fullname} />
               <Button
                 type="primary"
                 block
                 className="mt-4"
-                onClick={() => navigate(`/artist/${artist._id}`)}
+                onClick={() => {
+                  navigate(`/artist/${artist._id}`);
+                  window.scrollTo({
+                    top: 0,
+                    behavior: "smooth",
+                  });
+                }}
               >
                 Xem chi tiết
               </Button>
@@ -142,11 +148,10 @@ const StylingDecoration = ({ scrollTo }) => {
             <Button
               type={activeKey === item.title ? "primary" : "default"}
               onClick={() => setActiveKey(item.title)}
-              className={`w-full capitalize ${
-                activeKey === item.title
-                  ? "bg-blue-600 text-white"
-                  : "bg-gray-100 text-gray-700"
-              }`}
+              className={`w-full capitalize ${activeKey === item.title
+                ? "bg-blue-600 text-white"
+                : "bg-gray-100 text-gray-700"
+                }`}
             >
               {item.title}
             </Button>
@@ -155,14 +160,14 @@ const StylingDecoration = ({ scrollTo }) => {
       </Row>
 
       {activeKey === "List of makeup artists"
-        ? renderArtists() // Hiển thị artist nếu tiêu đề là "List of makeup artists"
+        ? renderArtists()
         : styling_decorating_list
-            .filter((item) => item.title === activeKey)
-            .map((item) => (
-              <Card bordered={false} key={item.id}>
-                {renderServices(item.list_services)}
-              </Card>
-            ))}
+          .filter((item) => item.title === activeKey)
+          .map((item) => (
+            <Card bordered={false} key={item.id}>
+              {renderServices(item.list_services)}
+            </Card>
+          ))}
     </div>
   );
 };

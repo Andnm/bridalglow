@@ -176,13 +176,26 @@ function Profile() {
 
   const handleMakeupImageChange = (fileList) => {
     const newFileList = fileList.map((file) => {
-      return file.originFileObj || file.url;
-    });
+      if (file.originFileObj) {
+        return file.originFileObj;
+      }
+      return file.url;
+    }).filter(file => file); 
+  
     setMakeupImgListFile(newFileList);
+  
+    const newUrls = newFileList.map(file => {
+      if (file instanceof File) {
+        return URL.createObjectURL(file);
+      }
+      return file; 
+    });
+  
     setUserData({
       ...userData,
-      makeup_img_list: newFileList.map((file) => URL.createObjectURL(file)),
+      makeup_img_list: newUrls,
     });
+    
     return false;
   };
 
