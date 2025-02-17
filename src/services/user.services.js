@@ -27,9 +27,9 @@ export const getAllArtists = async () => {
   }
 };
 
-export const updateUserProfile = async (user_id, dataBody) => {
+export const updateUserProfile = async (dataBody) => {
   try {
-    const response = await axiosInstance.put(`/api/users/${user_id}`, dataBody);
+    const response = await axiosInstance.put(`/api/users`, dataBody);
     return response.data;
   } catch (error) {
     throw error;
@@ -51,7 +51,7 @@ export const changePassword = async (user_id, data) => {
 export const checkOldPassword = async (user_id, data) => {
   try {
     const response = await axiosInstance.post(
-      `api/users/changePassword/${user_id}`,
+      `api/users/checkOldPassword/${user_id}`,
       data
     );
     return response.data;

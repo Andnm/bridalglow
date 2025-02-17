@@ -23,6 +23,7 @@ import { updateUser } from "../../redux/reducers/userReducer";
 import { toast } from "react-toastify";
 import SpinnerLoading from "../../components/loading/SpinnerLoading";
 import { ROLE_CUSTOMER } from "../../utils/constants";
+import dayjs from "dayjs";
 
 const { Option } = Select;
 
@@ -46,13 +47,17 @@ function Profile() {
     avatar_url: userRedux?.user?.avatar_url || "",
     makeup_img_list: userRedux?.user?.makeup_img_list || [],
   });
+  const [avatar_url_file, setAvatarUrlFile] = useState(null);
+  const [makeup_img_list_file, setMakeupImgListFile] = useState([]);
 
   useEffect(() => {
+    const dobDate = userRedux?.user?.dob ? dayjs(userRedux?.user?.dob) : null;
+
     setUserData({
       fullname: userRedux?.user?.fullname || "",
       email: userRedux?.user?.email || "",
       phone_number: userRedux?.user?.phone_number || "",
-      dob: userRedux?.user?.dob || null,
+      dob: dobDate,
       gender: userRedux?.user?.gender || "",
       description: userRedux?.user?.description || "",
       achievements: userRedux?.user?.achievements || [],
@@ -68,37 +73,50 @@ function Profile() {
 
     if (userRedux?.user) {
       try {
-        let newAvatarUrl = userData.avatar_url;
-        if (newAvatarUrl && newAvatarUrl !== userRedux.user.avatar_url) {
-          newAvatarUrl = await uploadToCloudinary(newAvatarUrl);
+        let uploadedUrl = userData.avatar_url;
+        if (avatar_url_file) {
+          try {
+            uploadedUrl = await uploadToCloudinary(avatar_url_file);
+            setUserData({ ...userData, avatar_url: uploadedUrl });
+          } catch (error) {
+            console.error("Upload avatar failed:", error);
+            toast.error("Error uploading avatar");
+            return;
+          }
         }
 
-        let newMakeupImgList = userData.makeup_img_list;
-        if (
-          newMakeupImgList &&
-          !arraysEqual(newMakeupImgList, userRedux.user.makeup_img_list)
-        ) {
-          newMakeupImgList = await uploadMultipleToCloudinary(newMakeupImgList);
+        let uploadedUrlsList = userData.makeup_img_list;
+        if (makeup_img_list_file.length > 0) {
+          try {
+            uploadedUrlsList = await uploadMultipleToCloudinary(
+              makeup_img_list_file
+            );
+
+            setUserData({ ...userData, makeup_img_list: uploadedUrlsList });
+          } catch (error) {
+            console.error("Upload makeup images failed:", error);
+            toast.error("Error uploading makeup images");
+            return;
+          }
         }
 
         const updatedUserData = {
           ...userData,
-          avatar_url: newAvatarUrl,
-          makeup_img_list: newMakeupImgList,
+          dob: userData.dob ? userData?.dob?.format("YYYY-MM-DD") : null,
+          avatar_url: uploadedUrl,
+          makeup_img_list: uploadedUrlsList,
         };
 
-        const response = await updateUserProfile(
-          userRedux.user._id,
-          updatedUserData
-        );
-        if (response.success) {
-          toast.success("Profile updated successfully");
-          dispatch(updateUser(updatedUserData));
-        } else {
-          toast.error("Failed to update profile");
-        }
+        const response = await updateUserProfile(updatedUserData);
+        toast.success("Profile updated successfully");
+        dispatch(updateUser(updatedUserData));
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
       } catch (error) {
-        toast.error("An error occurred: " + error);
+        console.log("error: ", error);
+        toast.error("An error occurred: " + error?.response?.data);
       } finally {
         setIsLoading(false);
       }
@@ -109,7 +127,6 @@ function Profile() {
     const formData = new FormData();
     formData.append("file", imageUrl);
     formData.append("upload_preset", UPLOAD_PRESET);
-    formData.append("cloud_name", CLOUD_NAME);
 
     try {
       const response = await fetch(
@@ -133,7 +150,6 @@ function Profile() {
       const formData = new FormData();
       formData.append("file", imageUrl);
       formData.append("upload_preset", UPLOAD_PRESET);
-      formData.append("cloud_name", CLOUD_NAME);
 
       const response = await fetch(
         `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`,
@@ -151,15 +167,8 @@ function Profile() {
     return uploadedUrls;
   };
 
-  const arraysEqual = (arr1, arr2) => {
-    if (arr1.length !== arr2.length) return false;
-    for (let i = 0; i < arr1.length; i++) {
-      if (arr1[i] !== arr2[i]) return false;
-    }
-    return true;
-  };
-
   const handleAvatarChange = (file) => {
+    setAvatarUrlFile(file);
     const newAvatarUrl = URL.createObjectURL(file);
     setUserData({ ...userData, avatar_url: newAvatarUrl });
     return false;
@@ -167,9 +176,13 @@ function Profile() {
 
   const handleMakeupImageChange = (fileList) => {
     const newFileList = fileList.map((file) => {
-      return file.url || URL.createObjectURL(file.originFileObj);
+      return file.originFileObj || file.url;
     });
-    setUserData({ ...userData, makeup_img_list: newFileList });
+    setMakeupImgListFile(newFileList);
+    setUserData({
+      ...userData,
+      makeup_img_list: newFileList.map((file) => URL.createObjectURL(file)),
+    });
     return false;
   };
 
@@ -247,7 +260,9 @@ function Profile() {
                 wrapperCol={{ span: 16 }}
               >
                 <DatePicker
-                  value={userData.dob}
+                  value={
+                    dayjs(userData.dob).isValid() ? dayjs(userData.dob) : null
+                  }
                   onChange={(date) => setUserData({ ...userData, dob: date })}
                   style={{ marginBottom: 15 }}
                   placeholder="Date of Birth"
@@ -290,6 +305,7 @@ function Profile() {
                       }
                       placeholder="Description"
                       style={{ marginBottom: 15 }}
+                      rows={6}
                     />
                   </Form.Item>
 
@@ -308,6 +324,7 @@ function Profile() {
                       }
                       placeholder="Achievements"
                       style={{ marginBottom: 15 }}
+                      rows={6}
                     />
                   </Form.Item>
 
@@ -323,6 +340,7 @@ function Profile() {
                       }
                       placeholder="Experience"
                       style={{ marginBottom: 15 }}
+                      rows={6}
                     />
                   </Form.Item>
 

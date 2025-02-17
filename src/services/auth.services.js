@@ -50,16 +50,6 @@ export const resetPassword = async (data) => {
   }
 };
 
-export const checkOldPassword = async (user_id) => {
-  try {
-    const response = await axiosInstance.post(
-      `api/users/changePassword/${user_id}`
-    );
-    return response.data;
-  } catch (error) {
-    throw error;
-  }
-};
 
 export const logout = () => {
   localStorage.removeItem("token");

@@ -131,7 +131,7 @@ const ArtistDetail = () => {
   }
 
   const handleDateSelect = async (date) => {
-    const dateString = date.format("YYYY-MM-DD");
+    const dateString = date?.format("YYYY-MM-DD");
     setSelectedDate(dateString);
     try {
       setIsLoading(true);

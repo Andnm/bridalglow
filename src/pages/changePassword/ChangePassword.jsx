@@ -1,12 +1,15 @@
 import React, { useState } from "react";
 import { Form, Input, Button, message, Card } from "antd";
 import { userSelector } from "../../redux/selectors/selector";
-import { useSelector } from "react-redux";
-import { changePassword } from "../../services/user.services";
-import { checkOldPassword } from "../../services/auth.services";
+import { useDispatch, useSelector } from "react-redux";
+import { changePassword, checkOldPassword } from "../../services/user.services";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+import { logoutUser } from "../../redux/reducers/userReducer";
 
 const ChangePassword = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const userData = useSelector(userSelector);
 
   const [step, setStep] = useState(1);
@@ -21,7 +24,7 @@ const ChangePassword = () => {
       setStep(2);
     } catch (error) {
       console.log("error: ", error);
-      toast.error("An error occurred while changing the password " + error);
+      toast.error(error?.response?.data);
     } finally {
       setLoading(false);
     }
@@ -34,9 +37,11 @@ const ChangePassword = () => {
         password: values.newPassword,
         confirmPassword: values.confirmPassword,
       });
-      toast.success("Password changed successfully!");
+      toast.success("Password changed successfully! Please login again!");
+      navigate("/");
+      dispatch(logoutUser());
     } catch (error) {
-      toast.error("An error occurred while changing the password! " + error);
+      toast.error(error?.response?.data);
     } finally {
       setLoading(false);
     }
