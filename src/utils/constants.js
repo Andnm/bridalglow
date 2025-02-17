@@ -170,7 +170,7 @@ export const styling_decorating_list = [
   },
   {
     id: 33,
-    title: "thiệp đám cưới",
+    title: "wedding invitation",
     list_services: [
       {
         name: "Gói chỉnh sửa thiệp",

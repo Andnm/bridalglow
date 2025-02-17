@@ -18,11 +18,3 @@ export const checkFreeSlot = async (data) => {
   }
 };
 
-export const createSchedule = async (data) => {
-  try {
-    const response = await axiosInstance.post("/api/schedules", data);
-    return response.data;
-  } catch (error) {
-    throw error;
-  }
-};

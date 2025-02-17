@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Card, List, Image, Typography, Button, Row, Col, Spin } from "antd";
 import { ShoppingCartOutlined } from "@ant-design/icons";
-import { useNavigate } from "react-router-dom"; 
+import { useNavigate } from "react-router-dom";
 import { styling_decorating_list } from "../../utils/constants";
 import { getAllArtists } from "../../services/user.services";
 
@@ -13,7 +13,7 @@ const StylingDecoration = ({ scrollTo }) => {
   const [artists, setArtists] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (scrollTo && titleRef.current) {
@@ -25,8 +25,7 @@ const StylingDecoration = ({ scrollTo }) => {
     const fetchArtists = async () => {
       setLoading(true);
       try {
-        const data = await getAllArtists(); 
-        console.log("data: ", data)
+        const data = await getAllArtists();
         setArtists(data);
       } catch (error) {
         console.error("Error fetching artists:", error);
@@ -96,7 +95,11 @@ const StylingDecoration = ({ scrollTo }) => {
 
   const renderArtists = () => {
     if (loading) {
-      return <Spin size="large" />;
+      return (
+        <div className="w-full flex justify-center items-center min-h-screen">
+          <Spin size="large" />
+        </div>
+      );
     }
 
     return (
@@ -105,14 +108,14 @@ const StylingDecoration = ({ scrollTo }) => {
           <Col key={artist._id} span={8}>
             <Card
               hoverable
-              cover={<Image alt={artist.name} src={artist.image} />}
+              cover={<Image alt={artist.fullname} src={artist.avatar_url} />}
             >
-              <Card.Meta title={artist.name} />
+              <Card.Meta title={artist.fullname} />
               <Button
                 type="primary"
                 block
                 className="mt-4"
-                onClick={() => navigate(`/artist/${artist._id}`)} 
+                onClick={() => navigate(`/artist/${artist._id}`)}
               >
                 Xem chi tiết
               </Button>

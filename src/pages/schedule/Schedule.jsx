@@ -33,14 +33,17 @@ import {
 import { getAllSchedules } from "../../services/schedule.services";
 import SearchFilterHeader from "../../components/manage/SearchFilterHeader";
 import { list_services_wedding, ROLE_CUSTOMER } from "../../utils/constants";
-import moment from "moment";
+import dayjs from "dayjs";
+import { formatPrice } from "../../utils/common";
 
 const Schedule = () => {
   const userData = useSelector(userSelector);
   const [isLoading, setIsLoading] = useState(false);
   const [originalData, setOriginalData] = useState([]);
   const [processingData, setProcessingData] = useState([]);
-  const [selectedDate, setSelectedDate] = useState(null);
+  const [selectedDate, setSelectedDate] = useState(
+    dayjs().format("YYYY-MM-DD")
+  );
   const [searchText, setSearchText] = useState("");
 
   useEffect(() => {
@@ -49,8 +52,13 @@ const Schedule = () => {
         setIsLoading(true);
         try {
           const responseGetAllItem = await getAllSchedules();
-          setOriginalData([...responseGetAllItem].reverse());
-          setProcessingData([...responseGetAllItem].reverse());
+          const sortedData = [...responseGetAllItem].reverse();
+          setOriginalData(sortedData);
+
+          const filteredData = sortedData.filter((item) =>
+            dayjs(item.appointment_date).isSame(dayjs(selectedDate), "day")
+          );
+          setProcessingData(filteredData);
         } catch (error) {
           toast.error("There was an error loading data!");
           toast.error(error.response?.data?.message);
@@ -62,7 +70,7 @@ const Schedule = () => {
     };
 
     fetchItems();
-  }, []);
+  }, [userData]);
 
   useEffect(() => {
     let updatedData = [...originalData];
@@ -73,11 +81,9 @@ const Schedule = () => {
       );
     }
 
-    if (selectedDate) {
-      updatedData = updatedData.filter((item) =>
-        moment(item.appointment_date).isSame(selectedDate, "day")
-      );
-    }
+    updatedData = updatedData.filter((item) =>
+      dayjs(item.appointment_date).isSame(dayjs(selectedDate), "day")
+    );
 
     setProcessingData(updatedData);
   }, [searchText, selectedDate, originalData]);
@@ -113,15 +119,16 @@ const Schedule = () => {
             <div style={{ display: "flex", alignItems: "center" }}>
               <Avatar
                 src={
-                  record.avatar_url || generateFallbackAvatar(record.fullname)
+                  record.customer_id.avatar_url ||
+                  generateFallbackAvatar(record.customer_id.fullname)
                 }
-                alt={record.fullname}
+                alt={record.customer_id.fullname}
                 style={{ marginRight: "8px", border: "1px solid #d9d9d9" }}
                 size={55}
               />
               <div>
-                <div className="text-base">{record.fullname}</div>
-                <div className="opacity-70">{record.email}</div>
+                <div className="text-base">{record.customer_id.fullname}</div>
+                <div className="opacity-70">{record.customer_id.email}</div>
               </div>
             </div>
           ),
@@ -130,7 +137,7 @@ const Schedule = () => {
       title: "Appointment Date",
       dataIndex: "appointment_date",
       key: "appointment",
-      render: (appointment) => appointment,
+      render: (appointment) => dayjs(appointment).format("YYYY-MM-DD"),
     },
     {
       title: "Slot",
@@ -155,15 +162,30 @@ const Schedule = () => {
       dataIndex: "service_id",
       key: "service_id",
       render: (service_id) => (
-        <span className="capitalize">
-          {list_services_wedding.find((s) => s.id === service_id)?.name}
-        </span>
+        <p className="capitalize">
+          {(() => {
+            const service = list_services_wedding.find(
+              (s) => s.id === parseInt(service_id)
+            );
+            return (
+              <>
+                {service?.name} -{" "}
+                <span className="text-red-800">
+                  {formatPrice(service?.price)}
+                </span>
+              </>
+            );
+          })()}
+        </p>
       ),
     },
   ];
 
   const handleDateChange = (date) => {
-    setSelectedDate(date ? moment(date).format("YYYY-MM-DD") : null);
+    const newDate = date
+      ? dayjs(date).format("YYYY-MM-DD")
+      : dayjs().format("YYYY-MM-DD");
+    setSelectedDate(newDate);
   };
 
   return (
@@ -175,6 +197,7 @@ const Schedule = () => {
       <div className="mb-4">
         <DatePicker
           onChange={handleDateChange}
+          value={dayjs(selectedDate)} 
           style={{ width: 200 }}
           placeholder="Select a date"
         />

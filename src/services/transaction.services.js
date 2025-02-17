@@ -32,3 +32,15 @@ export const getAllTransactionByAdmin = async () => {
     throw error;
   }
 };
+
+export const createSchedule = async (data) => {
+  try {
+    const response = await axiosInstance.post(
+      "/api/payOs/create-schedule",
+      data
+    );
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};

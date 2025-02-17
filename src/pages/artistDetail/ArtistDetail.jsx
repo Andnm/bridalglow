@@ -22,75 +22,17 @@ import { checkFreeSlot } from "../../services/schedule.services";
 import moment from "moment";
 import { formatPrice } from "../../utils/common";
 import { toast } from "react-toastify";
+import { getAllArtists } from "../../services/user.services";
+import { createSchedule } from "../../services/transaction.services";
 const { Option } = Select;
 
 const { Title, Text } = Typography;
-
-const getAllArtists = async () => {
-  return [
-    {
-      _id: 1,
-      name: "Artist 1",
-      avatar_url:
-        "https://lh7-us.googleusercontent.com/VfYYf7aVtHarR-Nl0suKnW5l0pv2yNbPDlBP_iHGPfl2fjNTOIA7DcbCj5rafNk3W3m0IIVfX-luQYc-MFNPM7yNe9iLKuUGBLd9__jLpruqYyt3w4zMwngpGSCmmlfSngjZ_SPxAsY9zS6iVAYF7kE",
-      description: "Artist 1 description",
-      phone_number: "123-456-7890",
-      email: "artist1@example.com",
-      dob: "1990-01-01",
-      gender: "Male",
-      achievements: "Award 1, Award 2",
-      fanpage: "https://facebook.com/artist1",
-      experience: "5 years",
-      makeup_img_list: [
-        "https://lh7-us.googleusercontent.com/BCfDPytIdpuTrhKpSuV3zIzAxe3GjCKzW0z-dKP3LsDR-FyM4T8LGtnRU2vEE71MsLDQ6METmPclLiguyac1bCA1oiHzymZtzJPJOOr731SceYOREAsiY2YpP9VRT6FMMDX2trLHXdUzoweHPPT_nPI",
-        "https://lh7-us.googleusercontent.com/gAXOAcbNm-JQZZ-4EuSyx4_90qzJnfdyJRjPy_844Tlt-nGpjp2XAngNxXL4rk78SqK9_7nf5-L5ZrC4EeK_YAeM3saA1VEjEy4J7dt-6uVWRplkEj4HBzIwQ2l_iB8FATgLVAAnb-CaZrIgFwDdM3M",
-        "https://lh7-us.googleusercontent.com/UIOjhvC2mK2klXahddKyeUKlaA3hecblzgsfbIL6jQU76Z_6qXrqUX1n3Ze9F67_zL-5SsDimsnE9bjd9EO2AwkgHWR8oRkJGycVBXZ61Na4iPF2zNS2451-iAUFtb_Cv3UhXqOoRXTWq3wTHHANHH4",
-      ],
-      role: "Senior Makeup Artist",
-      specialty: ["Bridal Makeup", "Fashion Makeup", "Event Makeup"],
-    },
-    {
-      _id: 2,
-      name: "Artist 2",
-      avatar_url: "artist2.jpg",
-      description: "Artist 2 description",
-      phone_number: "123-456-7891",
-      email: "artist2@example.com",
-      dob: "1992-02-02",
-      gender: "Female",
-      achievements: "Award 3, Award 4",
-      fanpage: "https://facebook.com/artist2",
-      experience: "3 years",
-      makeup_img_list: ["makeup3.jpg", "makeup4.jpg"],
-      role: "Freelance Makeup Artist",
-      specialty: ["Party Makeup", "Photography Makeup", "Glam Makeup"],
-    },
-    {
-      _id: 3,
-      name: "Artist 3",
-      avatar_url: "artist3.jpg",
-      description: "Artist 3 description",
-      phone_number: "123-456-7892",
-      email: "artist3@example.com",
-      dob: "1988-03-03",
-      gender: "Non-binary",
-      achievements: "Award 5, Award 6",
-      fanpage: "https://facebook.com/artist3",
-      experience: "8 years",
-      makeup_img_list: ["makeup5.jpg", "makeup6.jpg"],
-      role: "Makeup Instructor",
-      specialty: ["Theatrical Makeup", "SFX Makeup", "Bridal Makeup"],
-    },
-  ];
-};
 
 const ArtistDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const userData = useSelector(userSelector);
-
-  console.log("userData: ", userData)
 
   const [artist, setArtist] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -118,14 +60,18 @@ const ArtistDetail = () => {
   }, [id]);
 
   if (loading) {
-    return <Spin size="large" />;
+    return (
+      <div className="w-full flex justify-center items-center min-h-screen">
+        <Spin size="large" />
+      </div>
+    );
   }
 
   if (!artist) {
     return (
-      <div>
-        <Text>Artist not found.</Text>
-        <Button onClick={() => navigate("/")}>Go back</Button>
+      <div className="flex flex-col justify-center items-center min-h-screen">
+        <h1 className="text-4xl mb-10">Artist not found</h1>
+        <Button onClick={() => navigate("/services")}>Go back</Button>
       </div>
     );
   }
@@ -162,21 +108,12 @@ const ArtistDetail = () => {
   };
 
   const handleConfirmBooking = async () => {
-    const data = {
-      customer_id: userData?.user?._id,
-      artist_id: artist._id,
-      appointment_date: selectedDate,
-      slot: selectedSlot,
-      place: selectedPlace,
-      service_id: selectedService,
-    };
-
     Modal.confirm({
       title: "Confirm Booking",
       content: (
-        <div className=" mx-auto">
+        <div className="mx-auto">
           <p className="text-lg text-gray-700 mb-4">
-            <strong>Artist:</strong> {artist.name}
+            <strong>Artist:</strong> {artist.fullname}
           </p>
           <p className="text-lg text-gray-700 mb-4">
             <strong>Date:</strong> {selectedDate}
@@ -192,18 +129,50 @@ const ArtistDetail = () => {
           </p>
           <p className="text-lg text-gray-700 capitalize">
             <strong>Service:</strong>{" "}
-            {list_services_wedding.find((s) => s.id === selectedService)?.name}
+            {(() => {
+              const service = list_services_wedding.find(
+                (s) => s.id === selectedService
+              );
+              return (
+                <>
+                  {service?.name} -{" "}
+                  <span className="text-red-800">
+                    {formatPrice(service?.price)}
+                  </span>
+                </>
+              );
+            })()}
           </p>
         </div>
       ),
       okText: "Checkout",
       cancelText: "Cancel",
-      onOk() {
-        console.log("Booking confirmed with data: ", data);
+      onOk: async () => {
+        try {
+          const scheduleData = {
+            customer_id: userData?.user?._id,
+            artist_id: artist._id,
+            appointment_date: selectedDate,
+            slot: selectedSlot,
+            place: selectedPlace,
+            service_id: selectedService,
+            amount: list_services_wedding.find((s) => s.id === selectedService)
+              ?.price,
+          };
+
+          console.log("scheduleData: ", scheduleData);
+
+          const dataResponse = await createSchedule(scheduleData);
+
+          const redirectUrl = dataResponse.paymentUrl;
+
+          window.location.href = redirectUrl;
+        } catch (error) {
+          console.log("error create payos: ", error);
+          toast.error(error?.response?.data);
+        }
       },
-      onCancel() {
-        console.log("Booking cancelled");
-      },
+      onCancel() {},
     });
   };
 
@@ -215,7 +184,7 @@ const ArtistDetail = () => {
       <Row gutter={[16, 16]} justify="center">
         <Col span={6}>
           <Image
-            alt={artist.name}
+            alt={artist.fullname}
             src={artist.avatar_url}
             style={{
               width: "100%",
@@ -226,7 +195,7 @@ const ArtistDetail = () => {
         </Col>
         <Col span={18}>
           <Card bordered={false}>
-            <Title level={2}>{artist.name}</Title>
+            <Title level={2}>{artist.fullname}</Title>
             <Text type="secondary">{artist.role}</Text>
             <Divider />
             <Text strong>Email: </Text>
