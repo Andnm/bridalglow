@@ -48,3 +48,47 @@ export const slideInRight = {
     transition: { duration: 0.8, delay: 1 },
   },
 };
+
+export function formatDateTimeVN(isoString) {
+  const date = new Date(isoString);
+
+  const options = {
+    hour: "2-digit",
+    minute: "2-digit",
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+    hour12: false,
+    timeZone: "Asia/Ho_Chi_Minh",
+  };
+
+  const formatter = new Intl.DateTimeFormat("vi-VN", options);
+  const formattedParts = formatter.formatToParts(date);
+
+  const time = `${formattedParts.find((p) => p.type === "hour").value}:${
+    formattedParts.find((p) => p.type === "minute").value
+  }`;
+
+  const dateStr = `${formattedParts.find((p) => p.type === "day").value}/${
+    formattedParts.find((p) => p.type === "month").value
+  }/${formattedParts.find((p) => p.type === "year").value}`;
+
+  return `${time} | ${dateStr}`;
+}
+
+export const formatCurrencyToVND = (input) => {
+  const amount = typeof input === "string" ? parseFloat(input) : input;
+
+  if (isNaN(amount)) {
+    throw new Error(
+      "Invalid input value. Please enter a number or string containing numbers."
+    );
+  }
+
+  const formattedAmount = amount.toLocaleString("vi-VN", {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  });
+
+  return formattedAmount;
+};

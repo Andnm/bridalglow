@@ -9,6 +9,10 @@ import Profile from "../pages/profile/Profile";
 import Schedule from "../pages/schedule/Schedule";
 import ArtistDetail from "../pages/artistDetail/ArtistDetail";
 import ChangePassword from "../pages/changePassword/ChangePassword";
+import AdminTransactionPage from "../pages/admin/ManageTransaction";
+import AdminLayout from "../components/layout/AdminLayout";
+import Dashboard from "../pages/admin/Dashboard";
+import ManageTransaction from "../pages/admin/ManageTransaction";
 
 const Router = () => {
   return (
@@ -30,6 +34,10 @@ const Router = () => {
         <Route path="/artist/:id" element={<ArtistDetail />} />
       </Route>
 
+      <Route element={<AdminLayout />}>
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/manage-transaction" element={<ManageTransaction />} />
+      </Route>
       <Route path="/*" element={<NotFound />} />
     </Routes>
   );

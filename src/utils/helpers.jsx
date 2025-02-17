@@ -1,4 +1,9 @@
 import { toast } from "react-toastify";
+import { ROLE_ADMIN } from "./constants";
+import { BiSolidUserAccount } from "react-icons/bi";
+import { FaHotel } from "react-icons/fa";
+import { MdOutlineRequestPage, MdOutlineSpaceDashboard, MdSpaceDashboard } from "react-icons/md";
+import { AiOutlineDashboard, AiOutlineTransaction } from "react-icons/ai";
 
 export const handleActionNotSupport = () => {
   toast.warning("Tính năng chưa hỗ trợ");
@@ -37,3 +42,18 @@ export const generateFallbackAvatar = (fullname) => {
   const dataUrl = `data:image/svg+xml;base64,${btoa(svgString)}`;
   return dataUrl;
 };
+
+export const sliderMenu = [
+  {
+    key: "dashboard",
+    icon: <MdOutlineSpaceDashboard />,
+    label: "Dashboard",
+    roles: [ROLE_ADMIN],
+  },
+  {
+    key: "manage-transaction",
+    icon: <AiOutlineTransaction />,
+    label: "Transaction",
+    roles: [ROLE_ADMIN],
+  },
+];
