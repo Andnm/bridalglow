@@ -21,6 +21,7 @@ import { updateUserProfile } from "../../services/user.services";
 import { userSelector } from "../../redux/selectors/selector";
 import { updateUser } from "../../redux/reducers/userReducer";
 import { toast } from "react-toastify";
+import SpinnerLoading from "../../components/loading/SpinnerLoading";
 
 const { Option } = Select;
 
@@ -30,7 +31,7 @@ const CLOUD_NAME = process.env.REACT_APP_CLOUD_NAME;
 function Profile() {
   const dispatch = useDispatch();
   const userRedux = useSelector(userSelector);
-
+  const [isLoading, setIsLoading] = useState(false);
   const [userData, setUserData] = useState({
     fullname: userRedux?.user?.fullname || "",
     email: userRedux?.user?.email || "",
@@ -62,6 +63,8 @@ function Profile() {
   }, [userRedux]);
 
   const handleSave = async () => {
+    setIsLoading(true);
+
     if (userRedux?.user) {
       try {
         let newAvatarUrl = userData.avatar_url;
@@ -95,6 +98,8 @@ function Profile() {
         }
       } catch (error) {
         toast.error("An error occurred: " + error);
+      } finally {
+        setIsLoading(false);
       }
     }
   };
@@ -371,6 +376,7 @@ function Profile() {
           Save
         </Button>
       </div>
+      {isLoading && <SpinnerLoading />}
     </div>
   );
 }

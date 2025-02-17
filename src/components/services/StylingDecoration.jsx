@@ -1,28 +1,67 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Collapse, Card, List, Image, Typography, Button } from "antd";
-import {
-  CaretRightOutlined,
-  EyeOutlined,
-  ShoppingCartOutlined,
-} from "@ant-design/icons";
-import {
-  styling_decorating_list,
-  wedding_planning_list,
-} from "../../utils/constants";
+import { Card, List, Image, Typography, Button, Row, Col, Spin } from "antd";
+import { ShoppingCartOutlined } from "@ant-design/icons";
+import { useNavigate } from "react-router-dom"; // Import useNavigate từ react-router-dom
+import { styling_decorating_list } from "../../utils/constants";
 
-const { Panel } = Collapse;
 const { Text, Title } = Typography;
+
+// Giả sử đây là API call giả lập của bạn
+const getAllArtists = async () => {
+  // API thực tế của bạn sẽ trả về danh sách artist
+  return [
+    {
+      _id: 1,
+      name: "Artist 1",
+      image: "artist1.jpg",
+      description: "Artist 1 description",
+    },
+    {
+      _id: 2,
+      name: "Artist 2",
+      image: "artist2.jpg",
+      description: "Artist 2 description",
+    },
+    {
+      _id: 3,
+      name: "Artist 3",
+      image: "artist3.jpg",
+      description: "Artist 3 description",
+    },
+  ];
+};
 
 const StylingDecoration = ({ scrollTo }) => {
   const titleRef = useRef(null);
-
   const [activeKey, setActiveKey] = useState(null);
+  const [artists, setArtists] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  const navigate = useNavigate(); 
 
   useEffect(() => {
     if (scrollTo && titleRef.current) {
       titleRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
     }
   }, [scrollTo]);
+
+  useEffect(() => {
+    const fetchArtists = async () => {
+      setLoading(true);
+      try {
+        const data = await getAllArtists(); 
+        setArtists(data);
+      } catch (error) {
+        console.error("Error fetching artists:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (activeKey === "Danh sách các nhà trang điểm") {
+      fetchArtists();
+    }
+  }, [activeKey]);
 
   const formatPrice = (price) => {
     return new Intl.NumberFormat("vi-VN", {
@@ -78,6 +117,35 @@ const StylingDecoration = ({ scrollTo }) => {
     );
   };
 
+  const renderArtists = () => {
+    if (loading) {
+      return <Spin size="large" />;
+    }
+
+    return (
+      <Row gutter={[16, 16]}>
+        {artists.map((artist) => (
+          <Col key={artist._id} span={8}>
+            <Card
+              hoverable
+              cover={<Image alt={artist.name} src={artist.image} />}
+            >
+              <Card.Meta title={artist.name} />
+              <Button
+                type="primary"
+                block
+                className="mt-4"
+                onClick={() => navigate(`/artist/${artist._id}`)} 
+              >
+                Xem chi tiết
+              </Button>
+            </Card>
+          </Col>
+        ))}
+      </Row>
+    );
+  };
+
   return (
     <div className="max-w-4xl mx-auto p-4">
       <Title
@@ -87,24 +155,34 @@ const StylingDecoration = ({ scrollTo }) => {
       >
         Styling & Decoration
       </Title>
-      <Collapse
-        accordion
-        activeKey={activeKey}
-        onChange={setActiveKey}
-        expandIcon={({ isActive }) => (
-          <CaretRightOutlined rotate={isActive ? 90 : 0} />
-        )}
-      >
+
+      <Row gutter={[16, 16]} justify="center" className="mb-8">
         {styling_decorating_list.map((item) => (
-          <Panel
-            header={item.title}
-            key={item.id}
-            className="capitalize font-semibold text-xl"
-          >
-            <Card bordered={false}>{renderServices(item.list_services)}</Card>
-          </Panel>
+          <Col key={item.id}>
+            <Button
+              type={activeKey === item.title ? "primary" : "default"}
+              onClick={() => setActiveKey(item.title)}
+              className={`w-full capitalize ${
+                activeKey === item.title
+                  ? "bg-blue-600 text-white"
+                  : "bg-gray-100 text-gray-700"
+              }`}
+            >
+              {item.title}
+            </Button>
+          </Col>
         ))}
-      </Collapse>
+      </Row>
+
+      {activeKey === "Danh sách các nhà trang điểm"
+        ? renderArtists() // Hiển thị artist nếu tiêu đề là "Danh sách các nhà trang điểm"
+        : styling_decorating_list
+            .filter((item) => item.title === activeKey)
+            .map((item) => (
+              <Card bordered={false} key={item.id}>
+                {renderServices(item.list_services)}
+              </Card>
+            ))}
     </div>
   );
 };

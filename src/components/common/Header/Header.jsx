@@ -9,13 +9,12 @@ import { Avatar, Dropdown, Menu } from "antd";
 import { generateFallbackAvatar } from "../../../utils/helpers";
 import { FaUser } from "react-icons/fa";
 import { RiLogoutBoxRLine } from "react-icons/ri";
+import { CalendarOutlined } from "@ant-design/icons";
 
 function Header() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector(userSelector);
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  const [isLoginModal, setIsLoginModal] = useState(true);
 
   useEffect(() => {
     const handleRelogin = async () => {
@@ -29,16 +28,16 @@ function Header() {
         } else {
           const userRole = getCurrentUserAction?.payload?.role;
 
-          switch (userRole) {
-            case ROLE_ADMIN:
-              navigate("/dashboard");
-              break;
-            case ROLE_CUSTOMER:
-              navigate("/");
-              break;
-            default:
-              navigate("/");
-          }
+          // switch (userRole) {
+          //   case ROLE_ADMIN:
+          //     navigate("/dashboard");
+          //     break;
+          //   case ROLE_CUSTOMER:
+          //     navigate("/");
+          //     break;
+          //   default:
+          //     navigate("/");
+          // }
         }
       }
     };
@@ -60,11 +59,18 @@ function Header() {
         My Profile
       </Menu.Item>
       <Menu.Item
+        key="schedule"
+        onClick={() => navigate("/schedule")}
+        icon={<CalendarOutlined />}
+      >
+        Schedule
+      </Menu.Item>
+      <Menu.Item
         key="logout"
         onClick={handleLogout}
         icon={<RiLogoutBoxRLine />}
       >
-        Đăng xuất
+        Logout
       </Menu.Item>
     </Menu>
   );

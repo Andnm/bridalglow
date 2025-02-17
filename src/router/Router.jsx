@@ -6,6 +6,8 @@ import Services from "../pages/service";
 import LoginPage from "../pages/login";
 import ForgotPassword from "../pages/forgotPassword/ForgotPassword";
 import Profile from "../pages/profile/Profile";
+import Schedule from "../pages/schedule/Schedule";
+import ArtistDetail from "../pages/artistDetail/ArtistDetail";
 
 const Router = () => {
   return (
@@ -22,6 +24,8 @@ const Router = () => {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/schedule" element={<Schedule />} />
+        <Route path="/artist/:id" element={<ArtistDetail />} />
       </Route>
 
       <Route path="/*" element={<NotFound />} />
