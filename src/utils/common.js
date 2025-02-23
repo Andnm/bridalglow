@@ -7,6 +7,17 @@ export const areInArray = (arr, ...elements) => {
   return false;
 };
 
+export const newFormatPrice = (price) => {
+  const numberString = String(price);
+  const numberArray = numberString.split("");
+  const dotPosition = numberArray.length % 3 || 3;
+  for (let i = dotPosition; i < numberArray.length; i += 4) {
+    numberArray.splice(i, 0, ".");
+  }
+  const formattedNumber = numberArray.join("");
+  return formattedNumber;
+};
+
 export const formatPrice = (price) => {
   return new Intl.NumberFormat("vi-VN", {
     style: "currency",

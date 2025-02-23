@@ -32,6 +32,7 @@ import { list_services_wedding } from "../../utils/constants";
 import { FaPersonDotsFromLine } from "react-icons/fa6";
 import { BiUser } from "react-icons/bi";
 import { AiOutlineRise } from "react-icons/ai";
+import { newFormatPrice } from "../../utils/common";
 
 const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#8884D8"];
 
@@ -65,7 +66,10 @@ const Dashboard = () => {
         const statisticMonthlyDataResponse = await getStatisticMonthly(2025);
         const transactionsResponse = await getAllTransactionByAdmin();
 
-        console.log("statisticMonthlyDataResponse: ", statisticMonthlyDataResponse)
+        console.log(
+          "statisticMonthlyDataResponse: ",
+          statisticMonthlyDataResponse
+        );
 
         setSalesStatisticData(salesStatisticDataResponse);
         setSalesStatisticMonthData(salesStatisticMonthDataResponse);
@@ -145,14 +149,15 @@ const Dashboard = () => {
       <>
         <div>
           <h1 className="text-3xl font-bold text-gray-800">General</h1>
-          
         </div>
         <h2 className="text-lg font-bold text-gray-800">By day</h2>
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
           <MetricCard
             icon={<AiOutlineRise className="text-xl text-green-500" />}
             title="Revenue"
-            value={`${salesStatisticData?.income?.totalIncomeCurrent} VNĐ`}
+            value={`${newFormatPrice(
+              salesStatisticData?.income?.totalIncomeCurrent
+            )} VNĐ`}
             trend={`${
               salesStatisticData?.income?.differencePercent >= 0
                 ? `+ ${salesStatisticData?.income?.differencePercent} compared to yesterday`
@@ -187,7 +192,9 @@ const Dashboard = () => {
           <MetricCard
             icon={<AiOutlineRise className="text-xl text-green-500" />}
             title="Revenue"
-            value={`${salesStatisticMonthData?.income?.totalIncomeCurrent} VNĐ`}
+            value={`${newFormatPrice(
+              salesStatisticMonthData?.income?.totalIncomeCurrent
+            )} VNĐ`}
             trend={`${
               salesStatisticMonthData?.income?.differencePercent >= 0
                 ? `+ ${salesStatisticMonthData?.income?.differencePercent} compared to last month`
@@ -218,7 +225,6 @@ const Dashboard = () => {
 
         <div className="mt-6">
           <h1 className="text-3xl font-bold text-gray-800">Chart</h1>
-          
         </div>
 
         <div className="grid md:grid-cols-2 gap-6">
@@ -240,7 +246,7 @@ const Dashboard = () => {
           {/* Biểu đồ tròn Top Dịch Vụ */}
           <div className="bg-white shadow rounded-lg p-4 border">
             <h2 className="text-lg font-semibold text-gray-800 mb-4">
-            Top Selling Services
+              Top Selling Services
             </h2>
             <ResponsiveContainer width="100%" height={350}>
               <PieChart>
@@ -276,7 +282,7 @@ const Dashboard = () => {
 
         <div className="bg-white shadow rounded-lg p-4 border mt-6">
           <h2 className="text-lg font-semibold text-gray-800 mb-4">
-          Number of Users & Transactions
+            Number of Users & Transactions
           </h2>
           <ResponsiveContainer width="100%" height={350}>
             <LineChart data={multiLineData}>
