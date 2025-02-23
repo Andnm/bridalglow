@@ -59,8 +59,6 @@ const ManageTransaction = () => {
         try {
           const responseGetAllItem = await getAllTransactionByAdmin();
 
-          console.log("responseGetAllItem: ", responseGetAllItem);
-
           const sortedData = [...responseGetAllItem].sort(
             (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
           );

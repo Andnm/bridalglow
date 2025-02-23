@@ -9,6 +9,16 @@ export const getStatisticSale = async () => {
   }
 };
 
+export const getStatisticSaleMonth = async () => {
+  try {
+    const response = await axiosInstance.get("/api/statistics/sales/month");
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+
 export const getStatisticMonthly = async (year) => {
   try {
     const response = await axiosInstance.get(`/api/statistics/monthly/${year}`);

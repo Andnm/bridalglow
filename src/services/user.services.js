@@ -38,7 +38,9 @@ export const getAllArtists = async () => {
 
 export const banAccountByAdmin = async (account_id) => {
   try {
-    const response = await axiosInstance.patch(`/api/users/banAccountByAdmin/${account_id}`);
+    const response = await axiosInstance.patch(
+      `/api/users/banAccountByAdmin/${account_id}`
+    );
     return response.data;
   } catch (error) {
     throw error;
@@ -47,7 +49,9 @@ export const banAccountByAdmin = async (account_id) => {
 
 export const unBanAccountByAdmin = async (account_id) => {
   try {
-    const response = await axiosInstance.patch(`/api/users/unBanAccountByAdmin/${account_id}`);
+    const response = await axiosInstance.patch(
+      `/api/users/unBanAccountByAdmin/${account_id}`
+    );
     return response.data;
   } catch (error) {
     throw error;
@@ -57,6 +61,15 @@ export const unBanAccountByAdmin = async (account_id) => {
 export const updateUserProfile = async (dataBody) => {
   try {
     const response = await axiosInstance.put(`/api/users`, dataBody);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const updateArtistRoleByAdmin = async (user_id) => {
+  try {
+    const response = await axiosInstance.put(`/api/users/up-artist/${user_id}`);
     return response.data;
   } catch (error) {
     throw error;

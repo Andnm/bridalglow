@@ -119,7 +119,7 @@ export const list_services_wedding = [
   },
   {
     id: 2,
-    name: "tone Trung Quốc",
+    name: "Tone Trung Quốc",
     price: 1000000,
     img_links: [
       "https://tonywedding.vn/wp-content/uploads/2024/10/462463419_961173852717829_30951954353924339_n.jpg",
