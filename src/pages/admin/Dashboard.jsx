@@ -2,9 +2,15 @@ import React from 'react';
 import { 
   BarChart, 
   Bar, 
+  LineChart,
+  Line,
+  PieChart, 
+  Pie, 
+  Cell, 
   XAxis, 
   YAxis, 
   Tooltip, 
+  Legend,
   ResponsiveContainer 
 } from 'recharts';
 import { 
@@ -23,6 +29,58 @@ const salesData = [
   { name: 'Tháng 5', total: 6000 },
   { name: 'Tháng 6', total: 5500 },
 ];
+
+// Dữ liệu mẫu cho biểu đồ đường
+const multiLineData = [
+  { 
+    name: 'Tháng 1', 
+    customers: 400, 
+    artists: 240, 
+    transactions: 240 
+  },
+  { 
+    name: 'Tháng 2', 
+    customers: 300, 
+    artists: 139, 
+    transactions: 221 
+  },
+  { 
+    name: 'Tháng 3', 
+    customers: 200, 
+    artists: 380, 
+    transactions: 229 
+  },
+  { 
+    name: 'Tháng 4', 
+    customers: 278, 
+    artists: 390, 
+    transactions: 200 
+  },
+  { 
+    name: 'Tháng 5', 
+    customers: 189, 
+    artists: 480, 
+    transactions: 218 
+  },
+  { 
+    name: 'Tháng 6', 
+    customers: 239, 
+    artists: 380, 
+    transactions: 250 
+  },
+];
+
+// Dữ liệu mẫu cho biểu đồ tròn (Top dịch vụ)
+const topServicesData = [
+  { name: 'Thiết Kế Logo', value: 400 },
+  { name: 'Minh Họa Nghệ Thuật', value: 300 },
+  { name: 'Thiết Kế Web', value: 200 },
+  { name: 'Chỉnh Sửa Ảnh', value: 150 },
+  { name: 'Dịch Vụ Khác', value: 100 }
+];
+
+// Bảng màu cho biểu đồ tròn
+const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884D8'];
 
 // Component thẻ số liệu
 const MetricCard = ({ icon, title, value, trend }) => (
@@ -75,16 +133,77 @@ const Dashboard = () => {
         />
       </div>
 
-      {/* Biểu đồ doanh số */}
+      {/* Phần biểu đồ */}
+      <div className="grid md:grid-cols-2 gap-6">
+        {/* Biểu đồ doanh số */}
+        <div className="bg-white shadow rounded-lg p-4 border">
+          <h2 className="text-lg font-semibold text-gray-800 mb-4">Doanh Số Hàng Tháng</h2>
+          <ResponsiveContainer width="100%" height={350}>
+            <BarChart data={salesData}>
+              <XAxis dataKey="name" className="text-sm" />
+              <YAxis className="text-sm" />
+              <Tooltip />
+              <Bar dataKey="total" fill="#8884d8" radius={[4, 4, 0, 0]} />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+
+        {/* Biểu đồ tròn Top Dịch Vụ */}
+        <div className="bg-white shadow rounded-lg p-4 border">
+          <h2 className="text-lg font-semibold text-gray-800 mb-4">Top Dịch Vụ Bán Chạy</h2>
+          <ResponsiveContainer width="100%" height={350}>
+            <PieChart>
+              <Pie
+                data={topServicesData}
+                cx="50%"
+                cy="50%"
+                labelLine={false}
+                outerRadius={120}
+                fill="#8884d8"
+                dataKey="value"
+                label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+              >
+                {topServicesData.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                ))}
+              </Pie>
+              <Tooltip />
+              <Legend 
+                layout="vertical" 
+                verticalAlign="bottom" 
+                align="center"
+              />
+            </PieChart>
+          </ResponsiveContainer>
+        </div>
+      </div>
+
+      {/* Biểu đồ đường */}
       <div className="bg-white shadow rounded-lg p-4 border">
-        <h2 className="text-lg font-semibold text-gray-800 mb-4">Doanh Số Hàng Tháng</h2>
+        <h2 className="text-lg font-semibold text-gray-800 mb-4">Số Lượng Người Dùng & Giao Dịch</h2>
         <ResponsiveContainer width="100%" height={350}>
-          <BarChart data={salesData}>
+          <LineChart data={multiLineData}>
             <XAxis dataKey="name" className="text-sm" />
             <YAxis className="text-sm" />
             <Tooltip />
-            <Bar dataKey="total" fill="#8884d8" radius={[4, 4, 0, 0]} />
-          </BarChart>
+            <Legend />
+            <Line 
+              type="monotone" 
+              dataKey="customers" 
+              stroke="#8884d8" 
+              activeDot={{ r: 8 }} 
+            />
+            <Line 
+              type="monotone" 
+              dataKey="artists" 
+              stroke="#82ca9d" 
+            />
+            <Line 
+              type="monotone" 
+              dataKey="transactions" 
+              stroke="#ffc658" 
+            />
+          </LineChart>
         </ResponsiveContainer>
       </div>
     </div>
