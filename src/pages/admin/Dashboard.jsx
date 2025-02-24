@@ -66,11 +66,6 @@ const Dashboard = () => {
         const statisticMonthlyDataResponse = await getStatisticMonthly(2025);
         const transactionsResponse = await getAllTransactionByAdmin();
 
-        console.log(
-          "statisticMonthlyDataResponse: ",
-          statisticMonthlyDataResponse
-        );
-
         setSalesStatisticData(salesStatisticDataResponse);
         setSalesStatisticMonthData(salesStatisticMonthDataResponse);
 

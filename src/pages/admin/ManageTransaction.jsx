@@ -59,6 +59,8 @@ const ManageTransaction = () => {
         try {
           const responseGetAllItem = await getAllTransactionByAdmin();
 
+          console.log("responseGetAllItem: ", responseGetAllItem)
+
           const sortedData = [...responseGetAllItem].sort(
             (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
           );
@@ -141,7 +143,7 @@ const ManageTransaction = () => {
       key: "service_id",
       render: (serviceIds) => {
         const serviceNames = serviceIds.map((id) => {
-          const service = list_services_wedding.find((item) => item.id === id);
+          const service = list_services_wedding.find((item) => item.id == id);
           return service ? service.name : "Not found services";
         });
 
