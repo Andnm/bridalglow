@@ -109,7 +109,7 @@ export const list_services_wedding = [
   {
     id: 1,
     name: "Tone Hàn Quốc trong trẻo nhẹ nhàng",
-    price: 1200000,
+    price: 50000,
     img_links: [
       "https://tonywedding.vn/wp-content/uploads/2024/10/458721688_936951878473360_2458986664776221706_n.jpg",
       "https://tonywedding.vn/wp-content/uploads/2024/10/446716197_873078341527381_4416524073718868125_n-1.jpg",
@@ -120,7 +120,7 @@ export const list_services_wedding = [
   {
     id: 2,
     name: "Tone Trung Quốc",
-    price: 1000000,
+    price: 50000,
     img_links: [
       "https://tonywedding.vn/wp-content/uploads/2024/10/462463419_961173852717829_30951954353924339_n.jpg",
       "https://tonywedding.vn/wp-content/uploads/2024/10/454233310_915574850611063_3488176110788637095_n.jpg",
@@ -131,7 +131,7 @@ export const list_services_wedding = [
   {
     id: 3,
     name: "Makeup tone Thái Lan",
-    price: 1000000,
+    price: 50000,
     img_links: [
       "https://tonywedding.vn/wp-content/uploads/2022/10/2-copy-3-1024x1536.jpg",
       "https://tonywedding.vn/wp-content/uploads/2024/01/15-scaled.jpeg",
@@ -142,7 +142,7 @@ export const list_services_wedding = [
   {
     id: 4,
     name: "Tone hồng Pastel và hồng đào",
-    price: 1100000,
+    price: 50000,
     img_links: [
       "https://tonywedding.vn/wp-content/uploads/2024/10/434299415_830671979101351_6558973679586805367_n.jpg",
       "https://tonywedding.vn/wp-content/uploads/2024/10/441486934_861229192712296_6059659039837371522_n.jpg",
@@ -153,7 +153,7 @@ export const list_services_wedding = [
   {
     id: 5,
     name: "Makeup tone nude",
-    price: 1300000,
+    price: 50000,
     img_links: [
       "https://tonywedding.vn/wp-content/uploads/2024/01/2-scaled.jpeg",
       "https://tonywedding.vn/wp-content/uploads/2024/01/1-scaled.jpeg",
