@@ -86,13 +86,15 @@ const Dashboard = () => {
           {}
         );
 
-        const updatedTopServicesData = list_services_wedding.map((service) => {
-          const count = serviceCountMap[service.id] || 0;
-          return {
-            name: service.name,
-            value: count,
-          };
-        });
+        const updatedTopServicesData = list_services_wedding
+          .map((service) => {
+            const count = serviceCountMap[service.id] || 0;
+            return {
+              name: service.name,
+              value: count,
+            };
+          })
+          .filter((service) => service.value > 0);
 
         setTopServicesData(updatedTopServicesData);
 
@@ -238,7 +240,6 @@ const Dashboard = () => {
             </ResponsiveContainer>
           </div>
 
-          {/* Biểu đồ tròn Top Dịch Vụ */}
           <div className="bg-white shadow rounded-lg p-4 border">
             <h2 className="text-lg font-semibold text-gray-800 mb-4">
               Top Selling Services
@@ -246,7 +247,7 @@ const Dashboard = () => {
             <ResponsiveContainer width="100%" height={350}>
               <PieChart>
                 <Pie
-                  data={topServicesData}
+                  data={topServicesData} 
                   cx="50%"
                   cy="50%"
                   labelLine={false}
