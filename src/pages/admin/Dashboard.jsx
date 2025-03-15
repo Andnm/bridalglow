@@ -155,33 +155,30 @@ const Dashboard = () => {
             value={`${newFormatPrice(
               salesStatisticData?.income?.totalIncomeCurrent
             )} VNĐ`}
-            trend={`${
-              salesStatisticData?.income?.differencePercent >= 0
+            trend={`${salesStatisticData?.income?.differencePercent >= 0
                 ? `+ ${salesStatisticData?.income?.differencePercent} compared to yesterday`
                 : `- ${salesStatisticData?.income?.differencePercent} compared to yesterday`
-            }`}
+              }`}
           />
           <MetricCard
             icon={<BiUser className="text-xl text-blue-500" />}
             title="Customer"
             value={`${salesStatisticData?.newCustomerDifferencePercent?.totalNewCustomerCurrent}`}
-            trend={`${
-              salesStatisticData?.newCustomerDifferencePercent
+            trend={`${salesStatisticData?.newCustomerDifferencePercent
                 ?.differencePercent >= 0
                 ? `+ ${salesStatisticData?.newCustomerDifferencePercent?.totalNewCustomerCurrent} compared to yesterday`
                 : `- ${salesStatisticData?.newCustomerDifferencePercent?.totalNewCustomerCurrent} compared to yesterday`
-            }`}
+              }`}
           />
           <MetricCard
             icon={<FaPersonDotsFromLine className="text-xl text-purple-500" />}
             title="Artist"
             value={`${salesStatisticData?.newArtistDifferencePercent?.totalNewArtistCurrent}`}
-            trend={`${
-              salesStatisticData?.newArtistDifferencePercent
+            trend={`${salesStatisticData?.newArtistDifferencePercent
                 ?.differencePercent >= 0
                 ? `+ ${salesStatisticData?.newArtistDifferencePercent?.totalNewArtistCurrent} compared to yesterday`
                 : `- ${salesStatisticData?.newArtistDifferencePercent?.totalNewArtistCurrent} compared to yesterday`
-            }`}
+              }`}
           />
         </div>
         <h2 className="text-lg font-bold text-gray-800">By month</h2>
@@ -192,31 +189,26 @@ const Dashboard = () => {
             value={`${newFormatPrice(
               salesStatisticMonthData?.income?.totalIncomeCurrent
             )} VNĐ`}
-            trend={`${
-              salesStatisticMonthData?.income?.differencePercent >= 0
-                ? `+ ${salesStatisticMonthData?.income?.differencePercent} compared to last month`
-                : `- ${salesStatisticMonthData?.income?.differencePercent} compared to last month`
-            }`}
+            trend={`${salesStatisticMonthData?.income?.differencePercent
+              } compared to last month`}
           />
           <MetricCard
             icon={<BiUser className="text-xl text-blue-500" />}
             title="Customer"
             value={`${salesStatisticMonthData?.newCustomers?.totalNewCustomerCurrent}`}
-            trend={`${
-              salesStatisticMonthData?.newCustomers?.differencePercent >= 0
+            trend={`${salesStatisticMonthData?.newCustomers?.differencePercent >= 0
                 ? `+ ${salesStatisticMonthData?.newCustomers?.totalNewCustomerCurrent} compared to last month`
                 : `- ${salesStatisticMonthData?.newCustomers?.totalNewCustomerCurrent} compared to last month`
-            }`}
+              }`}
           />
           <MetricCard
             icon={<FaPersonDotsFromLine className="text-xl text-purple-500" />}
             title="Artist"
             value={`${salesStatisticMonthData?.newArtists?.totalNewArtistCurrent}`}
-            trend={`${
-              salesStatisticMonthData?.newArtists?.differencePercent >= 0
+            trend={`${salesStatisticMonthData?.newArtists?.differencePercent >= 0
                 ? `+ ${salesStatisticMonthData?.newArtists?.totalNewArtistCurrent} compared to last month`
                 : `- ${salesStatisticMonthData?.newArtists?.totalNewArtistCurrent} compared to last month`
-            }`}
+              }`}
           />
         </div>
 
@@ -247,7 +239,7 @@ const Dashboard = () => {
             <ResponsiveContainer width="100%" height={350}>
               <PieChart>
                 <Pie
-                  data={topServicesData} 
+                  data={topServicesData}
                   cx="50%"
                   cy="50%"
                   labelLine={false}
@@ -266,11 +258,11 @@ const Dashboard = () => {
                   ))}
                 </Pie>
                 <Tooltip />
-                <Legend
+                {/* <Legend
                   layout="vertical"
                   verticalAlign="bottom"
                   align="center"
-                />
+                  wrapperStyle={{ marginTop: '100px' }} /> */}
               </PieChart>
             </ResponsiveContainer>
           </div>
