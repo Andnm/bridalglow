@@ -8,14 +8,18 @@ export const areInArray = (arr, ...elements) => {
 };
 
 export const newFormatPrice = (price) => {
-  const numberString = String(price);
+  const isNegative = price < 0;
+  const numberString = String(Math.abs(price)); 
   const numberArray = numberString.split("");
   const dotPosition = numberArray.length % 3 || 3;
+
   for (let i = dotPosition; i < numberArray.length; i += 4) {
     numberArray.splice(i, 0, ".");
   }
-  const formattedNumber = numberArray.join("");
-  return formattedNumber;
+
+  let formattedNumber = numberArray.join("");
+
+  return isNegative ? `- ${formattedNumber}` : formattedNumber;
 };
 
 export const formatPrice = (price) => {

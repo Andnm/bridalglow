@@ -65,7 +65,7 @@ const Dashboard = () => {
         const salesStatisticMonthDataResponse = await getStatisticSaleMonth();
         const statisticMonthlyDataResponse = await getStatisticMonthly(2025);
         const transactionsResponse = await getAllTransactionByAdmin();
-
+        console.log("salesStatisticDataResponse: ", salesStatisticDataResponse)
         setSalesStatisticData(salesStatisticDataResponse);
         setSalesStatisticMonthData(salesStatisticMonthDataResponse);
 
@@ -155,29 +155,31 @@ const Dashboard = () => {
             value={`${newFormatPrice(
               salesStatisticData?.income?.totalIncomeCurrent
             )} VNĐ`}
-            trend={`${salesStatisticData?.income?.differencePercent >= 0
-                ? `+ ${salesStatisticData?.income?.differencePercent} compared to yesterday`
-                : `- ${salesStatisticData?.income?.differencePercent} compared to yesterday`
+            trend={`${salesStatisticData?.income?.difference >= 0
+              ? `+ ${newFormatPrice(salesStatisticData?.income?.difference)
+              } VNĐ compared to yesterday`
+              : `${newFormatPrice(salesStatisticData?.income?.difference)
+              } VNĐ compared to yesterday`
               }`}
           />
           <MetricCard
             icon={<BiUser className="text-xl text-blue-500" />}
             title="Customer"
-            value={`${salesStatisticData?.newCustomerDifferencePercent?.totalNewCustomerCurrent}`}
-            trend={`${salesStatisticData?.newCustomerDifferencePercent
-                ?.differencePercent >= 0
-                ? `+ ${salesStatisticData?.newCustomerDifferencePercent?.totalNewCustomerCurrent} compared to yesterday`
-                : `- ${salesStatisticData?.newCustomerDifferencePercent?.totalNewCustomerCurrent} compared to yesterday`
+            value={`${salesStatisticData?.newCustomers?.totalNewCustomerCurrent}`}
+            trend={`${salesStatisticData?.newCustomers
+              ?.difference >= 0
+              ? `+ ${salesStatisticData?.newCustomers?.totalNewCustomerCurrent} compared to yesterday`
+              : `${salesStatisticData?.newCustomers?.totalNewCustomerCurrent} compared to yesterday`
               }`}
           />
           <MetricCard
             icon={<FaPersonDotsFromLine className="text-xl text-purple-500" />}
             title="Artist"
-            value={`${salesStatisticData?.newArtistDifferencePercent?.totalNewArtistCurrent}`}
-            trend={`${salesStatisticData?.newArtistDifferencePercent
-                ?.differencePercent >= 0
-                ? `+ ${salesStatisticData?.newArtistDifferencePercent?.totalNewArtistCurrent} compared to yesterday`
-                : `- ${salesStatisticData?.newArtistDifferencePercent?.totalNewArtistCurrent} compared to yesterday`
+            value={`${salesStatisticData?.newArtists?.totalNewArtistCurrent}`}
+            trend={`${salesStatisticData?.newArtists
+              ?.difference >= 0
+              ? `+ ${salesStatisticData?.newArtists?.difference} compared to yesterday`
+              : `${salesStatisticData?.newArtists?.difference} compared to yesterday`
               }`}
           />
         </div>
@@ -189,25 +191,29 @@ const Dashboard = () => {
             value={`${newFormatPrice(
               salesStatisticMonthData?.income?.totalIncomeCurrent
             )} VNĐ`}
-            trend={`${salesStatisticMonthData?.income?.differencePercent
-              } compared to last month`}
+            trend={`${salesStatisticMonthData?.income?.difference >= 0
+              ? `+ ${newFormatPrice(salesStatisticMonthData?.income?.difference)
+              } VNĐ compared to last month`
+              : `${newFormatPrice(salesStatisticMonthData?.income?.difference)
+              } VNĐ compared to last month`
+              }`}
           />
           <MetricCard
             icon={<BiUser className="text-xl text-blue-500" />}
             title="Customer"
             value={`${salesStatisticMonthData?.newCustomers?.totalNewCustomerCurrent}`}
-            trend={`${salesStatisticMonthData?.newCustomers?.differencePercent >= 0
-                ? `+ ${salesStatisticMonthData?.newCustomers?.totalNewCustomerCurrent} compared to last month`
-                : `- ${salesStatisticMonthData?.newCustomers?.totalNewCustomerCurrent} compared to last month`
+            trend={`${salesStatisticMonthData?.newCustomers?.difference >= 0
+              ? `+ ${salesStatisticMonthData?.newCustomers?.difference} compared to last month`
+              : `${salesStatisticMonthData?.newCustomers?.difference} compared to last month`
               }`}
           />
           <MetricCard
             icon={<FaPersonDotsFromLine className="text-xl text-purple-500" />}
             title="Artist"
             value={`${salesStatisticMonthData?.newArtists?.totalNewArtistCurrent}`}
-            trend={`${salesStatisticMonthData?.newArtists?.differencePercent >= 0
-                ? `+ ${salesStatisticMonthData?.newArtists?.totalNewArtistCurrent} compared to last month`
-                : `- ${salesStatisticMonthData?.newArtists?.totalNewArtistCurrent} compared to last month`
+            trend={`${salesStatisticMonthData?.newArtists?.difference >= 0
+              ? `+ ${salesStatisticMonthData?.newArtists?.difference} compared to last month`
+              : `${salesStatisticMonthData?.newArtists?.difference} compared to last month`
               }`}
           />
         </div>
