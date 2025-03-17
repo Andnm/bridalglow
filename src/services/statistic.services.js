@@ -9,6 +9,15 @@ export const getStatisticSale = async () => {
   }
 };
 
+export const getStatisticUser = async () => {
+  try {
+    const response = await axiosInstance.get("/api/statistics/users");
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const getStatisticSaleMonth = async () => {
   try {
     const response = await axiosInstance.get("/api/statistics/sales/month");

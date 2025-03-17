@@ -18,11 +18,13 @@ import {
   UserOutlined,
   CreditCardOutlined,
   LineChartOutlined,
+  TransactionOutlined,
 } from "@ant-design/icons";
 import {
   getStatisticMonthly,
   getStatisticSale,
   getStatisticSaleMonth,
+  getStatisticUser,
 } from "../../services/statistic.services";
 import { toast } from "react-toastify";
 import SpinnerLoading from "../../components/loading/SpinnerLoading";
@@ -56,6 +58,11 @@ const Dashboard = () => {
   const [topServicesData, setTopServicesData] = useState([]);
   const [salesStatisticData, setSalesStatisticData] = useState({});
   const [salesStatisticMonthData, setSalesStatisticMonthData] = useState({});
+  const [userStatistics, setUserStatistics] = useState({
+    totalCustomer: 0,
+    totalArtist: 0,
+  });
+  const [totalTransactions, setTotalTransactions] = useState(0);
 
   useEffect(() => {
     const fetchDashboardData = async () => {
@@ -65,9 +72,12 @@ const Dashboard = () => {
         const salesStatisticMonthDataResponse = await getStatisticSaleMonth();
         const statisticMonthlyDataResponse = await getStatisticMonthly(2025);
         const transactionsResponse = await getAllTransactionByAdmin();
-        console.log("salesStatisticDataResponse: ", salesStatisticDataResponse)
+        const userStatisticsResponse = await getStatisticUser();
+
         setSalesStatisticData(salesStatisticDataResponse);
         setSalesStatisticMonthData(salesStatisticMonthDataResponse);
+        setUserStatistics(userStatisticsResponse);
+        setTotalTransactions(transactionsResponse.length);
 
         const servicesMap = list_services_wedding.reduce((map, service) => {
           map[service.id] = service.name;
@@ -144,7 +154,33 @@ const Dashboard = () => {
   ) : (
     <div className="p-6 space-y-2">
       <>
+        {/* Overview Section */}
         <div>
+          <h1 className="text-3xl font-bold text-gray-800">Overview</h1>
+        </div>
+        <div className="grid gap-4 md:grid-cols-3 lg:grid-cols-4">
+          <MetricCard
+            icon={<TransactionOutlined className="text-xl text-green-500" style={{color: "#10B981"}}/>}
+            title="Transactions"
+            value={totalTransactions}
+            trend="Total completed transactions"
+          />
+          <MetricCard
+            icon={<BiUser className="text-xl text-blue-500" />}
+            title="Customers"
+            value={userStatistics.totalCustomer}
+            trend="Total registered customers"
+          />
+          <MetricCard
+            icon={<FaPersonDotsFromLine className="text-xl text-purple-500" />}
+            title="Artists"
+            value={userStatistics.totalArtist}
+            trend="Total registered artists"
+          />
+        </div>
+
+        {/* General Section */}
+        <div className="mt-6">
           <h1 className="text-3xl font-bold text-gray-800">General</h1>
         </div>
         <h2 className="text-lg font-bold text-gray-800">By day</h2>
