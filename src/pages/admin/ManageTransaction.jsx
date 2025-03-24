@@ -68,7 +68,7 @@ const ManageTransaction = () => {
           setOriginalData(sortedData);
           setProcessingData(sortedData);
         } catch (error) {
-          toast.error("There was an error loading data!");
+          // toast.error("There was an error loading data!");
           toast.error(error.response?.data?.message);
           console.error("There was an error loading data!:", error);
         } finally {

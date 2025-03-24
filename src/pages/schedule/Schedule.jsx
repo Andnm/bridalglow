@@ -58,9 +58,11 @@ const Schedule = () => {
           const filteredData = sortedData.filter((item) =>
             dayjs(item.appointment_date).isSame(dayjs(selectedDate), "day")
           );
+
+          console.log("filteredData: ", filteredData)
           setProcessingData(filteredData);
         } catch (error) {
-          toast.error("There was an error loading data!");
+          // toast.error("There was an error loading data!");
           toast.error(error.response?.data?.message);
           console.error("There was an error loading data!:", error);
         } finally {
@@ -98,15 +100,15 @@ const Schedule = () => {
             <div style={{ display: "flex", alignItems: "center" }}>
               <Avatar
                 src={
-                  record.avatar_url || generateFallbackAvatar(record.fullname)
+                  record.artist_id.avatar_url || generateFallbackAvatar(record.artist_id.fullname)
                 }
-                alt={record.fullname}
+                alt={record.artist_id.fullname}
                 style={{ marginRight: "8px", border: "1px solid #d9d9d9" }}
                 size={55}
               />
               <div>
-                <div className="text-base">{record.fullname}</div>
-                <div className="opacity-70">{record.email}</div>
+                <div className="text-base">{record.artist_id.fullname}</div>
+                <div className="opacity-70">{record.artist_id.email}</div>
               </div>
             </div>
           ),

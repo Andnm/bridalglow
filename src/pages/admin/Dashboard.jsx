@@ -134,7 +134,7 @@ const Dashboard = () => {
           }))
         );
       } catch (error) {
-        toast.error("There was an error loading data!");
+        // toast.error("There was an error loading data!");
         console.error("There was an error loading data:", error);
       } finally {
         setIsLoading(false);
